@@ -64,13 +64,12 @@ namespace {
     }
 
     ThemeConfiguration defaultLightConfiguration() {
-        const QPalette palette = QApplication::style()->standardPalette();
         return {
             ThemePreset::Light,
-            palette.color(QPalette::Window),
-            palette.color(QPalette::Base),
-            palette.color(QPalette::WindowText),
-            palette.color(QPalette::Highlight)
+            QColor(246, 246, 246),
+            QColor(255, 255, 255),
+            QColor(25, 25, 25),
+            QColor(42, 130, 218)
         };
     }
 
