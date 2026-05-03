@@ -1,6 +1,6 @@
 # Windows build guide
 
-This repository supports a source build on Windows with **CMake** and **Visual Studio 2022**. The recommended workflow is the PowerShell setup and compile scripts added to the repository.
+This repository supports a source build on Windows with **CMake** and **Visual Studio 2022**. The recommended workflow uses the repository `justfile`, which wraps the PowerShell setup and compile scripts.
 
 ## Requirements
 
@@ -8,16 +8,17 @@ This repository supports a source build on Windows with **CMake** and **Visual S
 - Python 3 on `PATH`
 - Git
 - CMake
+- just
 
 ## Recommended workflow
 
 ### 1. Setup dependencies
 
 ```powershell
-.\scripts\setup.ps1
+just setup
 ```
 
-`setup.ps1` performs the Windows-specific project bootstrap:
+`just setup` runs the Windows bootstrap script and performs:
 
 1. Installs **Conan 2.11** and **aqtinstall** with Python.
 2. Clones `3rdparty\nodeeditor` if it is missing.
@@ -27,20 +28,21 @@ This repository supports a source build on Windows with **CMake** and **Visual S
 ### 2. Configure and build
 
 ```powershell
-.\scripts\compile.ps1 -Type Release -Deploy
+just package-release
 ```
 
-Useful options:
+Useful related commands:
 
-- `-Type Debug` to build a debug configuration
-- `-QtDir <path>` to point at an existing Qt installation instead of `.qt\6.8.3\msvc2022_64`
-- `-Clean` to remove the existing `build\vs2022-*` directory before configuring
-- `-Deploy` to run `windeployqt` and copy the runtime dependencies next to the executable
+- `just build-debug` to build a debug configuration
+- `just build-release` to build a release configuration without deployment
+- `just clean` to remove Windows build directories
+
+For advanced/override options (for example `-QtDir <path>` or `-Clean`), call `scripts/compile.ps1` directly.
 
 ### 3. Run
 
 ```powershell
-.\build\vs2022-release\dist\ComputerVisionBlueprint.exe
+just run
 ```
 
 If you omit `-Deploy`, the compiled executable is located at `build\vs2022-release\Release\ComputerVisionBlueprint.exe`.
@@ -54,6 +56,6 @@ If you omit `-Deploy`, the compiled executable is located at `build\vs2022-relea
 
 ## Notes
 
-- `CMakePresets.json` currently defines **Ninja** presets, so the Windows workflow uses the **Visual Studio 17 2022** generator directly through `compile.ps1`.
+- `CMakePresets.json` currently defines **Ninja** presets, so the Windows workflow uses the **Visual Studio 17 2022** generator directly through `compile.ps1` (called by `just`).
 - The configure step passes `-DCMAKE_POLICY_DEFAULT_CMP0091=NEW`, the Conan toolchain file, the Qt path, and `OpenCV_DIR` so `find_package(OpenCV CONFIG REQUIRED)` resolves correctly on Windows.
 - `windeployqt` may warn that `dxcompiler.dll` and `dxil.dll` are not present; that warning did not prevent the application from launching in the documented Windows workflow.

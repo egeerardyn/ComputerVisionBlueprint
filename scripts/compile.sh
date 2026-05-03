@@ -1,16 +1,15 @@
 #!/bin/bash
 
-# Initialize variables
-QT_DIR=""
+set -euo pipefail
+
+QT_DIR="${QT_DIR:-/home/user/Qt/6.8.3/gcc_64}"
 BUILD_TYPE=""
 
-# Function to print the usage of the script
 print_usage() {
-    echo "Usage: $0 --qt <path-to-Qt-directory> --type <debug|release>"
-    echo "Example: $0 --qt /opt/Qt5.12.10 --type debug"
+    echo "Usage: $0 --type <debug|release> [--qt <path-to-qt>]"
+    echo "Example: $0 --type debug --qt /home/user/Qt/6.8.3/gcc_64"
 }
 
-# Parse command line arguments
 while [ "$#" -gt 0 ]; do
     case "$1" in
         --qt)
@@ -34,18 +33,35 @@ while [ "$#" -gt 0 ]; do
     esac
 done
 
-# Check if both arguments were provided
-if [ -z "$QT_DIR" ] || [ -z "$BUILD_TYPE" ]; then
-    echo "Error: Both --qt and --type arguments are required."
+if [ -z "$BUILD_TYPE" ]; then
+    echo "Error: --type is required."
     print_usage
     exit 1
 fi
 
-# Configure and generate the build system
 if [ "$BUILD_TYPE" = "debug" ]; then
-    cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=.conan_debug/conan_toolchain.cmake -B cmake-build-debug -S . -DCMAKE_PREFIX_PATH="$QT_DIR"
-    cmake --build cmake-build-debug --target all
+    CMAKE_BUILD_TYPE="Debug"
+    CONAN_DIR=".conan/Debug"
+    BUILD_DIR="build/linux-debug"
 else
-    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=.conan_rel/conan_toolchain.cmake -B cmake-build-release -S . -DCMAKE_PREFIX_PATH="$QT_DIR"
-    cmake --build cmake-build-release --target all
+    CMAKE_BUILD_TYPE="Release"
+    CONAN_DIR=".conan/Release"
+    BUILD_DIR="build/linux-release"
 fi
+
+if [ ! -f "$CONAN_DIR/conan_toolchain.cmake" ]; then
+    echo "Missing Conan toolchain at $CONAN_DIR/conan_toolchain.cmake"
+    echo "Run ./scripts/setup.sh first."
+    exit 1
+fi
+
+cmake \
+    -S . \
+    -B "$BUILD_DIR" \
+    -G Ninja \
+    -DCMAKE_BUILD_TYPE="$CMAKE_BUILD_TYPE" \
+    -DCMAKE_TOOLCHAIN_FILE="$CONAN_DIR/conan_toolchain.cmake" \
+    -DCMAKE_PREFIX_PATH="$QT_DIR;$CONAN_DIR" \
+    -DOpenCV_DIR="$CONAN_DIR"
+
+cmake --build "$BUILD_DIR" --parallel

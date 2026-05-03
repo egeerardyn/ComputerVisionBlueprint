@@ -79,6 +79,7 @@ Before building from source, install:
 
 - Git
 - CMake
+- just
 - Qt 6
 - Python 3
 
@@ -86,39 +87,41 @@ The setup scripts also install Conan dependencies and clone `3rdparty/nodeeditor
 
 ### Build on Linux (Ubuntu 20.04+)
 
-`./scripts/setup.sh` installs the Ubuntu packages used by the project, creates a local virtual environment, installs Conan 2.11, resolves Conan dependencies for Debug and Release, and clones `3rdparty/nodeeditor` if it is missing.
+Use the repository `justfile` commands:
 
 ```bash
 # one-time dependency setup
-./scripts/setup.sh
+just setup
 
-# configure a release build
-cmake -S . -B build/linux-release \
-  -G Ninja \
-  -DCMAKE_BUILD_TYPE=Release \
-  -DCMAKE_TOOLCHAIN_FILE=.conan/Release/conan_toolchain.cmake \
-  -DCMAKE_PREFIX_PATH="/home/user/Qt/6.8.3/gcc_64;.conan/Release" \
-  -DOpenCV_DIR=.conan/Release
+# optional: point to your local Qt install (defaults to /home/user/Qt/6.8.3/gcc_64)
+export QT_DIR=/home/user/Qt/6.8.3/gcc_64
 
-# build
-cmake --build build/linux-release --parallel
+# configure and build release
+just build-release
+
+# or debug
+just build-debug
 ```
-
-Use your local Qt installation root for `CMAKE_PREFIX_PATH` (for example `/home/user/Qt/6.8.3/gcc_64`). For a Debug build, switch `Release` to `Debug` in both `.conan/...` paths and `CMAKE_BUILD_TYPE`.
 
 ### Build on Windows (Visual Studio 2022)
 
-The Windows workflow uses the recently added PowerShell scripts and keeps Qt, Conan output, and the packaged executable inside the repository.
+Use the repository `justfile` commands:
 
 ```powershell
-.\scripts\setup.ps1
+just setup
 
-.\scripts\compile.ps1 -Type Release -Deploy
+just package-release
 
-.\build\vs2022-release\dist\ComputerVisionBlueprint.exe
+just run
 ```
 
-`setup.ps1` installs Conan 2.11 and `aqtinstall`, clones `3rdparty\nodeeditor`, installs Qt 6.8.3 for MSVC 2022 into `.qt`, and prepares `.conan\Debug` plus `.conan\Release`. `compile.ps1` configures a Visual Studio 2022 build, builds it, and `-Deploy` packages a runnable executable with `windeployqt`.
+For a debug build:
+
+```powershell
+just build-debug
+```
+
+The `justfile` wraps the existing platform scripts (`setup.ps1`/`compile.ps1` on Windows and `setup.sh`/`compile.sh` on Linux) so the workflow is consistent across operating systems.
 
 Additional Windows details, optional flags, and output locations are documented in [WINDOWS_BUILD.md](WINDOWS_BUILD.md).
 

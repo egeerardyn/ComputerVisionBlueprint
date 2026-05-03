@@ -23,33 +23,33 @@ Run from repository root in PowerShell.
 1. One-time setup and dependency resolution:
 
 ```powershell
-.\scripts\setup.ps1
+just setup
 ```
 
 2. Configure/build Release and deploy runtime:
 
 ```powershell
-.\scripts\compile.ps1 -Type Release -Deploy
+just package-release
 ```
 
 3. Configure/build Debug:
 
 ```powershell
-.\scripts\compile.ps1 -Type Debug
+just build-debug
 ```
 
 4. Run packaged executable (when `-Deploy` used):
 
 ```powershell
-.\build\vs2022-release\dist\ComputerVisionBlueprint.exe
+just run
 ```
 
 ## Validation Expectations
 
 - For C++/Qt/OpenCV changes, build at least once with:
-  - `./scripts/compile.ps1 -Type Debug`
+  - `just build-debug`
 - If packaging or runtime DLL behavior is touched, also run:
-  - `./scripts/compile.ps1 -Type Release -Deploy`
+  - `just package-release`
 - There is no established automated test suite yet; rely on successful build plus focused manual checks in the app.
 
 ## Architecture Map
@@ -80,7 +80,7 @@ When implementing a new node, update all relevant integration points:
 
 ## Windows-Specific Pitfalls
 
-- `scripts/compile.ps1` expects Conan outputs in `.conan/Debug` or `.conan/Release`; run `scripts/setup.ps1` first.
+- Build commands expect Conan outputs in `.conan/Debug` or `.conan/Release`; run `just setup` first.
 - If Qt is not in `.qt/6.8.3/msvc2022_64`, pass `-QtDir` to `compile.ps1`.
 - `CMakePresets.json` uses Ninja presets; Windows script-based flow uses Visual Studio generator directly.
 - If `ui_MainWindow.h` appears unresolved in editor diagnostics, perform a build so Qt AUTOUIC-generated files are created.

@@ -55,9 +55,9 @@ Collect or infer:
 
 7. Validate on Windows.
    - Build with PowerShell:
-     - `./scripts/compile.ps1 -Type Debug`
+       - `just build-debug`
    - If runtime packaging behavior changed, also run:
-     - `./scripts/compile.ps1 -Type Release -Deploy`
+       - `just package-release`
 
 8. Perform quick manual checks.
    - Node appears in expected palette group.
