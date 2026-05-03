@@ -1,4 +1,5 @@
 #include "SqrBoxFilterModel.h"
+#include "Nodes/NodeHelpInfo.h"
 
 #include <QElapsedTimer>
 #include <QtConcurrent/QtConcurrent>
@@ -6,6 +7,12 @@
 #include "Nodes/Conversor/MatQt.h"
 #include "Nodes/OpenCV/OpenCVFilterUtils.h"
 #include "ui_BoxFilterForm.h"
+
+namespace {
+const NodeHelpRegistration kSqrBoxFilterModelHelp(QStringLiteral("SQR Box Filter"),
+                                                  makeNodeHelp(QStringLiteral("Computes a squared box filter, which is useful for local statistics and variance-style preprocessing."),
+                                                               QStringLiteral("https://docs.opencv.org/4.x/d4/d86/group__imgproc__filter.html")));
+}
 
 SqrBoxFilterModel::SqrBoxFilterModel() {
     connect(&m_watcher, &QFutureWatcher<std::tuple<QImage, quint64>>::finished, this,

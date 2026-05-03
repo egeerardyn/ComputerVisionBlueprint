@@ -3,6 +3,7 @@
 //
 
 #include "HoughLinesPModel.h"
+#include "Nodes/NodeHelpInfo.h"
 
 #include <opencv2/opencv.hpp>
 
@@ -13,6 +14,12 @@
 #include <QtConcurrent/QtConcurrent>
 #include "Nodes/Conversor/MatQt.h"
 #include <QElapsedTimer>
+
+namespace {
+const NodeHelpRegistration kHoughLinesPModelHelp(QStringLiteral("Hough Lines Probabilistic"),
+                                                 makeNodeHelp(QStringLiteral("Detects line segments with the probabilistic Hough transform and outputs the resulting line data."),
+                                                              QStringLiteral("https://docs.opencv.org/4.x/d9/db0/tutorial_hough_lines.html")));
+}
 
 HoughLinesPModel::HoughLinesPModel() {
     /*cv::CascadeClassifier faceCascade;

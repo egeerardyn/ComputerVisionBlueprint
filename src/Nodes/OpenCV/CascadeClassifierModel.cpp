@@ -3,7 +3,14 @@
 //
 
 #include "CascadeClassifierModel.h"
+#include "Nodes/NodeHelpInfo.h"
 #include "ui_CascadeClassifierForm.h"
+
+namespace {
+const NodeHelpRegistration kCascadeClassifierModelHelp(QStringLiteral("Cascade Classifier"),
+                                                       makeNodeHelp(QStringLiteral("Loads an OpenCV cascade classifier from a file so it can be reused by detection nodes such as Detect Multi Scale."),
+                                                                    QStringLiteral("https://docs.opencv.org/4.x/d1/de5/classcv_1_1CascadeClassifier.html")));
+}
 
 CascadeClassifier::CascadeClassifier() {
 }

@@ -5,12 +5,19 @@
 #include <QElapsedTimer>
 
 #include "GaussianBlurModel.h"
+#include "Nodes/NodeHelpInfo.h"
 #include "Nodes/Data/DataInclude.h"
 #include "ui_GaussianBlurForm.h"
 
 #include "Nodes/Conversor/MatQt.h"
 
 #include <opencv2/opencv.hpp>
+
+namespace {
+const NodeHelpRegistration kGaussianBlurModelHelp(QStringLiteral("Gaussian Blur"),
+                                                  makeNodeHelp(QStringLiteral("Applies Gaussian smoothing, which is often used before edge detection or segmentation."),
+                                                               QStringLiteral("https://docs.opencv.org/4.x/d4/d86/group__imgproc__filter.html")));
+}
 
 GaussianBlurModel::GaussianBlurModel() {
     connect(&m_watcher, &QFutureWatcher<std::tuple<QPixmap, quint64>>::finished, this,

@@ -3,7 +3,14 @@
 //
 
 #include "ImageInfoModel.h"
+#include "Nodes/NodeHelpInfo.h"
 #include "ui_ImageInfoForm.h"
+
+namespace {
+const NodeHelpRegistration kImageInfoModelHelp(QStringLiteral("Image Info"),
+                                               makeNodeHelp(QStringLiteral("Extracts basic metadata about the input image, such as dimensions and format, for inspection or downstream logic."),
+                                                            QStringLiteral("https://github.com/PabloPicose/ComputerVisionBlueprint")));
+}
 
 ImageInfoModel::ImageInfoModel() {
 }

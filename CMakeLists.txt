@@ -25,14 +25,18 @@ add_executable(ComputerVisionBlueprint
         src/CustomWidget/CheckBoxReadOnly.cpp
         src/CustomWidget/CheckBoxReadOnly.h
         src/Nodes/Basic/AdditionModel.h
+        src/Nodes/Basic/AdditionModel.cpp
         src/Nodes/Basic/DivisionModel.h
+        src/Nodes/Basic/DivisionModel.cpp
         src/Nodes/Basic/MathOperationDataModel.cpp
         src/Nodes/Basic/MathOperationDataModel.hpp
+        src/Nodes/Basic/MultiplicationModel.cpp
         src/Nodes/Basic/MultiplicationModel.hpp
         src/Nodes/Basic/NumberDisplayDataModel.cpp
         src/Nodes/Basic/NumberDisplayDataModel.hpp
         src/Nodes/Basic/NumberSourceDataModel.cpp
         src/Nodes/Basic/NumberSourceDataModel.hpp
+        src/Nodes/Basic/SubtractionModel.cpp
         src/Nodes/Basic/SubtractionModel.h
         src/Nodes/Constants/PiModel.cpp
         src/Nodes/Constants/PiModel.h

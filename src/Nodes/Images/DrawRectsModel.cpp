@@ -3,11 +3,18 @@
 //
 
 #include "DrawRectsModel.h"
+#include "Nodes/NodeHelpInfo.h"
 #include "ui_DrawRectsForm.h"
 #include <QPainter>
 #include <QPen>
 #include <QElapsedTimer>
 #include <QtConcurrent/QtConcurrent>
+
+namespace {
+const NodeHelpRegistration kDrawRectsModelHelp(QStringLiteral("Draw Rects"),
+                                               makeNodeHelp(QStringLiteral("Draws rectangles on the input image, which is useful for bounding boxes and region overlays."),
+                                                            QStringLiteral("https://docs.opencv.org/4.x/d6/d6e/group__imgproc__draw.html")));
+}
 
 DrawRectsModel::DrawRectsModel() {
     connect(&m_watcher, &QFutureWatcher<QPair<QImage, quint64>>::finished, this, &DrawRectsModel::processFinished);

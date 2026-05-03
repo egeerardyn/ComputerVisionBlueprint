@@ -1,4 +1,5 @@
 #include "MedianBlurModel.h"
+#include "Nodes/NodeHelpInfo.h"
 
 #include <QElapsedTimer>
 #include <QtConcurrent/QtConcurrent>
@@ -6,6 +7,12 @@
 #include "Nodes/Conversor/MatQt.h"
 #include "Nodes/OpenCV/OpenCVFilterUtils.h"
 #include "ui_MedianBlurForm.h"
+
+namespace {
+const NodeHelpRegistration kMedianBlurModelHelp(QStringLiteral("Median Blur"),
+                                                makeNodeHelp(QStringLiteral("Uses a median filter to reduce salt-and-pepper noise while preserving strong edges better than a simple average blur."),
+                                                             QStringLiteral("https://docs.opencv.org/4.x/d4/d86/group__imgproc__filter.html")));
+}
 
 MedianBlurModel::MedianBlurModel() {
     connect(&m_watcher, &QFutureWatcher<std::tuple<QImage, quint64>>::finished, this, &MedianBlurModel::processFinished);

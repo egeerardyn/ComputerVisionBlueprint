@@ -3,7 +3,14 @@
 //
 
 #include "FileFromUrlModel.h"
+#include "Nodes/NodeHelpInfo.h"
 #include "ui_FileFromUrlForm.h"
+
+namespace {
+const NodeHelpRegistration kFileFromUrlModelHelp(QStringLiteral("File From URL"),
+                                                 makeNodeHelp(QStringLiteral("Downloads a file from a URL and exposes the saved result as file data for the rest of the graph."),
+                                                              QStringLiteral("https://doc.qt.io/qt-6/qnetworkaccessmanager.html")));
+}
 
 FileFromUrlModel::FileFromUrlModel() {
     m_networkManager = new QNetworkAccessManager(this);

@@ -1,5 +1,13 @@
 #include "CircleVarModel.h"
 
+#include "Nodes/NodeHelpInfo.h"
+
+namespace {
+const NodeHelpRegistration kCircleVarModelHelp(QStringLiteral("Circles"),
+                                               makeNodeHelp(QStringLiteral("Collects one or more circle inputs into a circles output that can be reused by downstream drawing or analysis nodes."),
+                                                            QStringLiteral("https://github.com/PabloPicose/ComputerVisionBlueprint")));
+}
+
 CircleVarModel::CircleVarModel() {
 }
 

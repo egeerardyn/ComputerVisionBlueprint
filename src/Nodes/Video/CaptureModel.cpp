@@ -3,8 +3,15 @@
 //
 
 #include "CaptureModel.h"
+#include "Nodes/NodeHelpInfo.h"
 
 #include <QPushButton>
+
+namespace {
+const NodeHelpRegistration kCaptureModelHelp(QStringLiteral("Capture"),
+                                             makeNodeHelp(QStringLiteral("Takes a snapshot from the incoming video stream and publishes the captured frame as an image."),
+                                                          QStringLiteral("https://doc.qt.io/qt-6/qcamera.html")));
+}
 
 QString CaptureModel::caption() const {
     return QString("Capture");

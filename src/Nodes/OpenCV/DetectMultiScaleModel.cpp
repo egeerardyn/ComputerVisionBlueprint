@@ -3,12 +3,19 @@
 //
 
 #include "DetectMultiScaleModel.h"
+#include "Nodes/NodeHelpInfo.h"
 #include "ui_DetectMultiScaleForm.h"
 #include "Nodes/Conversor/MatQt.h"
 
 #include <QtConcurrent/QtConcurrent>
 
 int count = 0;
+
+namespace {
+const NodeHelpRegistration kDetectMultiScaleModelHelp(QStringLiteral("Detect Multi Scale"),
+                                                      makeNodeHelp(QStringLiteral("Runs a cascade classifier over the image and outputs the detected rectangles for faces or other trained objects."),
+                                                                   QStringLiteral("https://docs.opencv.org/4.x/d1/de5/classcv_1_1CascadeClassifier.html")));
+}
 
 DetectMultiScaleModel::DetectMultiScaleModel() {
     connect(&m_watcher, &QFutureWatcher<QPair<QList<QRect>, quint64>>::finished, this,

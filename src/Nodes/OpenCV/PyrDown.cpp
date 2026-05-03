@@ -3,11 +3,18 @@
 //
 
 #include "PyrDown.h"
+#include "Nodes/NodeHelpInfo.h"
 #include <QSpinBox>
 #include <QHBoxLayout>
 #include <QLabel>
 #include "Nodes/Conversor/MatQt.h"
 #include <QtConcurrent/QtConcurrent>
+
+namespace {
+const NodeHelpRegistration kPyrDownModelHelp(QStringLiteral("Pyr Down"),
+                                             makeNodeHelp(QStringLiteral("Reduces the image resolution by one pyramid level, applying smoothing as part of the downsampling step."),
+                                                          QStringLiteral("https://docs.opencv.org/4.x/d4/d1f/tutorial_pyramids.html")));
+}
 
 PyrDown::PyrDown() {
     connect(&m_watcher, &QFutureWatcher<QPair<quint64, QImage>>::finished, this, &PyrDown::processFinished);

@@ -1,4 +1,5 @@
 #include "DistanceTransformModel.h"
+#include "Nodes/NodeHelpInfo.h"
 
 #include <QAbstractSpinBox>
 #include <QComboBox>
@@ -13,6 +14,10 @@
 #include "Nodes/OpenCV/OpenCVFilterUtils.h"
 
 namespace {
+const NodeHelpRegistration kDistanceTransformModelHelp(QStringLiteral("Distance Transform"),
+                                                       makeNodeHelp(QStringLiteral("Computes the distance from each foreground pixel to the nearest background pixel, which is often used before watershed segmentation."),
+                                                                    QStringLiteral("https://docs.opencv.org/4.x/d7/d1b/group__imgproc__misc.html")));
+
 int DistanceTypeFromIndex(const int index) {
     switch (index) {
         case 0:

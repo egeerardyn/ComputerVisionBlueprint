@@ -1,8 +1,15 @@
 #include "NumberSourceDataModel.hpp"
+#include "Nodes/NodeHelpInfo.h"
 
 #include <QtCore/QJsonValue>
 #include <QtGui/QDoubleValidator>
 #include <QtWidgets/QLineEdit>
+
+namespace {
+const NodeHelpRegistration kNumberSourceDataModelHelp(QStringLiteral("NumberSource"),
+                                                      makeNodeHelp(QStringLiteral("Creates a numeric value inside the graph. Use it to feed arithmetic nodes or any parameter input that expects a scalar."),
+                                                                   QStringLiteral("https://github.com/PabloPicose/ComputerVisionBlueprint")));
+}
 
 NumberSourceDataModel::NumberSourceDataModel()
     : m_number(std::make_shared<VariantData>(0))

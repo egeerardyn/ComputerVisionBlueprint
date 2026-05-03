@@ -3,9 +3,16 @@
 //
 
 #include "ScaleImageModel.h"
+#include "Nodes/NodeHelpInfo.h"
 #include "ui_ScaleImageForm.h"
 #include <QElapsedTimer>
 #include <QtConcurrent/QtConcurrent>
+
+namespace {
+const NodeHelpRegistration kScaleImageModelHelp(QStringLiteral("Scale Image"),
+                                                makeNodeHelp(QStringLiteral("Resizes the input image using a scale factor so later processing can run on a larger or smaller version."),
+                                                             QStringLiteral("https://docs.opencv.org/4.x/da/d54/group__imgproc__transform.html")));
+}
 
 ScaleImageModel::ScaleImageModel() {
 }

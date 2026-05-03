@@ -3,10 +3,17 @@
 //
 
 #include "ColorCVModel.h"
+#include "Nodes/NodeHelpInfo.h"
 #include <QComboBox>
 
 #include "Nodes/Data/ImageData.h"
 #include "Nodes/Conversor/MatQt.h"
+
+namespace {
+const NodeHelpRegistration kColorCVModelHelp(QStringLiteral("Color OpenCV"),
+                                             makeNodeHelp(QStringLiteral("Converts the input image between OpenCV color spaces such as BGR, grayscale, or other supported formats."),
+                                                          QStringLiteral("https://docs.opencv.org/4.x/d8/d01/group__imgproc__color__conversions.html")));
+}
 
 ColorCVModel::ColorCVModel() {
 }

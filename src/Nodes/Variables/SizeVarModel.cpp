@@ -3,7 +3,14 @@
 //
 
 #include "SizeVarModel.h"
+#include "Nodes/NodeHelpInfo.h"
 #include "ui_SizeVarForm.h"
+
+namespace {
+const NodeHelpRegistration kSizeVarModelHelp(QStringLiteral("Size"),
+                                             makeNodeHelp(QStringLiteral("Creates or stores a QSize value that can be reused by nodes needing width and height style parameters."),
+                                                          QStringLiteral("https://github.com/PabloPicose/ComputerVisionBlueprint")));
+}
 
 SizeVarModel::SizeVarModel() {
 }

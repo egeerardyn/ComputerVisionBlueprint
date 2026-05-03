@@ -1,4 +1,5 @@
 #include "BoxFilterModel.h"
+#include "Nodes/NodeHelpInfo.h"
 
 #include <QElapsedTimer>
 #include <QtConcurrent/QtConcurrent>
@@ -6,6 +7,12 @@
 #include "Nodes/Conversor/MatQt.h"
 #include "Nodes/OpenCV/OpenCVFilterUtils.h"
 #include "ui_BoxFilterForm.h"
+
+namespace {
+const NodeHelpRegistration kBoxFilterModelHelp(QStringLiteral("Box Filter"),
+                                               makeNodeHelp(QStringLiteral("Applies a configurable box filter for averaging neighboring pixels over a rectangular kernel."),
+                                                            QStringLiteral("https://docs.opencv.org/4.x/d4/d86/group__imgproc__filter.html")));
+}
 
 BoxFilterModel::BoxFilterModel() {
     connect(&m_watcher, &QFutureWatcher<std::tuple<QImage, quint64>>::finished, this, &BoxFilterModel::processFinished);

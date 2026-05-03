@@ -3,6 +3,7 @@
 //
 
 #include "DrawCirclesModel.h"
+#include "Nodes/NodeHelpInfo.h"
 
 #include <QElapsedTimer>
 #include <QPainter>
@@ -11,6 +12,12 @@
 #include <QtConcurrent/QtConcurrent>
 
 #include "ui_DrawCirclesForm.h"
+
+namespace {
+const NodeHelpRegistration kDrawCirclesModelHelp(QStringLiteral("Draw Circles"),
+                                                 makeNodeHelp(QStringLiteral("Draws detected or user-provided circles on top of an image and outputs the annotated image."),
+                                                              QStringLiteral("https://docs.opencv.org/4.x/d6/d6e/group__imgproc__draw.html")));
+}
 
 DrawCirclesModel::DrawCirclesModel() {
     connect(&m_watcher, &QFutureWatcher<QPair<QImage, quint64>>::finished, this, &DrawCirclesModel::processFinished);

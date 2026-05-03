@@ -1,4 +1,5 @@
 #include "Filter2DModel.h"
+#include "Nodes/NodeHelpInfo.h"
 
 #include <QAbstractSpinBox>
 #include <QComboBox>
@@ -15,6 +16,12 @@
 
 #include "Nodes/Conversor/MatQt.h"
 #include "Nodes/OpenCV/OpenCVFilterUtils.h"
+
+namespace {
+const NodeHelpRegistration kFilter2DModelHelp(QStringLiteral("Filter2D"),
+                                              makeNodeHelp(QStringLiteral("Applies a custom 2D convolution kernel to the input image for sharpening, embossing, or other custom effects."),
+                                                           QStringLiteral("https://docs.opencv.org/4.x/d4/d86/group__imgproc__filter.html")));
+}
 
 Filter2DModel::Filter2DModel() {
     connect(&m_watcher, &QFutureWatcher<std::tuple<QImage, quint64>>::finished, this, &Filter2DModel::processFinished);

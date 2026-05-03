@@ -4,6 +4,14 @@
 
 #include "ScaleRects.h"
 
+#include "Nodes/NodeHelpInfo.h"
+
+namespace {
+const NodeHelpRegistration kScaleRectsHelp(QStringLiteral("Scale Rects"),
+                                           makeNodeHelp(QStringLiteral("Scales incoming rectangles by the configured factor so detections can be mapped between resized and original images."),
+                                                        QStringLiteral("https://github.com/PabloPicose/ComputerVisionBlueprint")));
+}
+
 QString ScaleRects::caption() const {
     return QString("Scale Rects");
 }

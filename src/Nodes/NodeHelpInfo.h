@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QMetaType>
 #include <QString>
 #include <QUrl>
 
@@ -21,6 +22,13 @@ public:
 
     virtual NodeHelpInfo nodeHelpInfo() const = 0;
 };
+
+class NodeHelpRegistration {
+public:
+    NodeHelpRegistration(QString modelName, NodeHelpInfo helpInfo);
+};
+
+NodeHelpInfo makeNodeHelp(QString summary, QString url = QString());
 
 NodeHelpInfo nodeHelpInfoForModelName(const QString& modelName);
 

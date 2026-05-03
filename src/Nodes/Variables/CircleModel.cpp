@@ -1,8 +1,15 @@
 #include "CircleModel.h"
+#include "Nodes/NodeHelpInfo.h"
 
 #include <QSignalBlocker>
 
 #include "ui_CircleForm.h"
+
+namespace {
+const NodeHelpRegistration kCircleModelHelp(QStringLiteral("Circle"),
+                                            makeNodeHelp(QStringLiteral("Creates a single circle value, typically defined by center and radius, for drawing or geometric processing nodes."),
+                                                         QStringLiteral("https://github.com/PabloPicose/ComputerVisionBlueprint")));
+}
 
 CircleModel::CircleModel() {
     updateOutputs({});

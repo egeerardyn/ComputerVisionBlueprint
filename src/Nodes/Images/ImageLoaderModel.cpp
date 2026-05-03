@@ -1,9 +1,16 @@
 #include "ImageLoaderModel.hpp"
+#include "Nodes/NodeHelpInfo.h"
 
 #include <QtCore/QDir>
 #include <QtCore/QEvent>
 
 #include <QtWidgets/QFileDialog>
+
+namespace {
+const NodeHelpRegistration kImageLoaderModelHelp(QStringLiteral("Image source"),
+                                                 makeNodeHelp(QStringLiteral("Loads an image from disk into the graph so downstream nodes can inspect, transform, or display it."),
+                                                              QStringLiteral("https://github.com/PabloPicose/ComputerVisionBlueprint")));
+}
 
 ImageLoaderModel::ImageLoaderModel()
     : _label(new QLabel("Double click to load image")) {

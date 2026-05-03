@@ -1,4 +1,5 @@
 #include "WatershedModel.h"
+#include "Nodes/NodeHelpInfo.h"
 
 #include <algorithm>
 
@@ -14,6 +15,10 @@
 #include "Nodes/Conversor/MatQt.h"
 
 namespace {
+const NodeHelpRegistration kWatershedModelHelp(QStringLiteral("Watershed"),
+                                               makeNodeHelp(QStringLiteral("Segments an image using marker-based watershed. Provide a source image and prepared markers to split touching regions."),
+                                                            QStringLiteral("https://docs.opencv.org/4.x/d3/db4/tutorial_py_watershed.html")));
+
 cv::Mat EnsureBgr(const cv::Mat& src) {
     if (src.channels() == 3) {
         return src;

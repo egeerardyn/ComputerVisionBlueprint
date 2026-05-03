@@ -1,4 +1,5 @@
 #include "BilateralFilterModel.h"
+#include "Nodes/NodeHelpInfo.h"
 
 #include <QElapsedTimer>
 #include <QtConcurrent/QtConcurrent>
@@ -6,6 +7,12 @@
 #include "Nodes/Conversor/MatQt.h"
 #include "Nodes/OpenCV/OpenCVFilterUtils.h"
 #include "ui_BilateralFilterForm.h"
+
+namespace {
+const NodeHelpRegistration kBilateralFilterModelHelp(QStringLiteral("Bilateral Filter"),
+                                                     makeNodeHelp(QStringLiteral("Smooths the image while preserving edges by combining spatial distance and color similarity."),
+                                                                  QStringLiteral("https://docs.opencv.org/4.x/d4/d86/group__imgproc__filter.html")));
+}
 
 BilateralFilterModel::BilateralFilterModel() {
     connect(&m_watcher, &QFutureWatcher<std::tuple<QImage, quint64>>::finished, this,
