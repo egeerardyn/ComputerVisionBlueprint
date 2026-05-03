@@ -30,18 +30,45 @@ jobs:
       - name: Set up uv
         uses: astral-sh/setup-uv@v5
 
-      - name: Install Qt 6.8.3
-        uses: jurplel/install-qt-action@v4
+      - name: Cache Qt installation
+        uses: actions/cache@v4
         with:
-          version: '6.8.3'
-          host: linux
-          target: desktop
-          arch: gcc_64
-          modules: qtmultimedia
-          cache: true
+          path: .qt
+          key: qt-linux-6.8.3-gcc_64-qtmultimedia-v2
+
+      - name: Install Qt 6.8.3
+        run: |
+          if [ ! -x ".qt/6.8.3/gcc_64/bin/qmake" ] && [ ! -x ".qt/6.8.3/linux_gcc_64/bin/qmake" ]; then
+            QT_ARCH=$(uvx --from aqtinstall aqt list-qt linux desktop --arch 6.8.3 | tr ' ' '\n' | grep -E '^(gcc_64|linux_gcc_64)$' | head -n 1)
+
+            if [ -z "$QT_ARCH" ]; then
+              echo "Could not resolve a supported Linux desktop Qt architecture for 6.8.3."
+              uvx --from aqtinstall aqt list-qt linux desktop --arch 6.8.3
+              exit 1
+            fi
+
+            if uvx --from aqtinstall aqt list-qt linux desktop --modules 6.8.3 "$QT_ARCH" | tr ' ' '\n' | grep -qx "qtmultimedia"; then
+              uvx --from aqtinstall aqt install-qt linux desktop 6.8.3 "$QT_ARCH" -m qtmultimedia -O .qt
+            else
+              echo "qtmultimedia is not listed for arch '$QT_ARCH'; installing base Qt only."
+              uvx --from aqtinstall aqt install-qt linux desktop 6.8.3 "$QT_ARCH" -O .qt
+            fi
+          fi
+
+      - name: Resolve Qt directory
+        run: |
+          if [ -x ".qt/6.8.3/gcc_64/bin/qmake" ]; then
+            echo "QT_DIR=${{ github.workspace }}/.qt/6.8.3/gcc_64" >> $GITHUB_ENV
+          elif [ -x ".qt/6.8.3/linux_gcc_64/bin/qmake" ]; then
+            echo "QT_DIR=${{ github.workspace }}/.qt/6.8.3/linux_gcc_64" >> $GITHUB_ENV
+          else
+            echo "Qt installation not found in expected directories."
+            find .qt -maxdepth 4 -type f -name qmake || true
+            exit 1
+          fi
 
       - name: Add Qt bin to PATH
-        run: echo "$QT_ROOT_DIR/bin" >> $GITHUB_PATH
+        run: echo "$QT_DIR/bin" >> $GITHUB_PATH
 
       - name: Cache Conan packages
         uses: actions/cache@v4
@@ -69,7 +96,7 @@ jobs:
             -G Ninja \
             -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_TOOLCHAIN_FILE=.conan/Release/conan_toolchain.cmake \
-            "-DCMAKE_PREFIX_PATH=$QT_ROOT_DIR;.conan/Release" \
+            "-DCMAKE_PREFIX_PATH=$QT_DIR;.conan/Release" \
             -DOpenCV_DIR=.conan/Release
 
       - name: Build (Release)
@@ -77,9 +104,11 @@ jobs:
 
       - name: Run tests
         run: |
-          if [ -f ".conan/Release/conanrunenv-release-x86_64.sh" ]; then
-            source .conan/Release/conanrunenv-release-x86_64.sh
-          fi
+          for env_script in .conan/Release/conanrunenv-release-*.sh; do
+            if [ -f "$env_script" ]; then
+              source "$env_script"
+            fi
+          done
           ctest --test-dir build/linux-release --output-on-failure \
             --output-junit test-results-linux.xml
 
