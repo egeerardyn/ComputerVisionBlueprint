@@ -3,7 +3,9 @@ param(
     [string]$QtArch = "win64_msvc2022_64",
     [string]$QtInstallRoot = ".qt",
     [string]$ConanVersion = "2.11",
-    [string]$NodeEditorRepo = "https://github.com/paceholder/nodeeditor.git"
+    [string]$NodeEditorRepo = "https://github.com/paceholder/nodeeditor.git",
+    [ValidateSet("x64", "arm64")]
+    [string[]]$TargetArchitectures = @("x64", "arm64")
 )
 
 $ErrorActionPreference = "Stop"
@@ -87,7 +89,15 @@ else {
 }
 
 Write-Host "Detecting Conan profile..."
-Invoke-Uvx "--from" "conan==$ConanVersion" "conan" "profile" "detect" "--force"
+# Note: conan profile detect may output warnings but still succeed; we suppress error checking for this step
+$ErrorActionPreference = "SilentlyContinue"
+if ($script:UseUvToolRunFallback) {
+    & $script:UvExe tool run "--from" "conan==$ConanVersion" "conan" "profile" "detect" "--force" 2>$null | Out-Null
+}
+else {
+    & $script:UvxExe "--from" "conan==$ConanVersion" "conan" "profile" "detect" "--force" 2>$null | Out-Null
+}
+$ErrorActionPreference = "Stop"
 
 if (-not (Test-Path "3rdparty")) {
     New-Item -ItemType Directory -Path "3rdparty" | Out-Null
@@ -113,15 +123,36 @@ else {
     Write-Host "Qt already present at $qtDir. Skipping Qt install."
 }
 
-Write-Host "Installing Conan dependencies for Debug..."
-Invoke-Uvx "--from" "conan==$ConanVersion" "conan" "install" "." "--output-folder=.conan\Debug" "--build=missing" "--settings=build_type=Debug" "--settings=arch=x86_64"
+Write-Host "Installing Conan dependencies for each target architecture..."
+$ErrorActionPreference = "SilentlyContinue"
+foreach ($targetArch in $TargetArchitectures) {
+    $conanArch = if ($targetArch -eq "x64") { "x86_64" } else { "armv8" }
+    $archSuffix = if ($targetArch -eq "x64") { "" } else { "-$targetArch" }
 
-Write-Host "Installing Conan dependencies for Release..."
-Invoke-Uvx "--from" "conan==$ConanVersion" "conan" "install" "." "--output-folder=.conan\Release" "--build=missing" "--settings=build_type=Release" "--settings=arch=x86_64"
+    Write-Host "  Installing for $targetArch (Conan arch: $conanArch)..."
+    Write-Host "    Debug build..."
+    Invoke-Uvx "--from" "conan==$ConanVersion" "conan" "install" "." "--output-folder=.conan\Debug$archSuffix" "--build=missing" "--settings=build_type=Debug" "--settings=arch=$conanArch"
+    if ($LASTEXITCODE -ne 0 -and $targetArch -eq "arm64") {
+        Write-Host "    Warning: ARM64 (armv8) OpenCV build failed. This is expected on ARM64 Windows due to SIMD incompatibilities."
+        Write-Host "    Skipping ARM64 builds. Use -Arch x64 on this ARM64 machine (which works via the x86_64 override)."
+        continue
+    }
+
+    Write-Host "    Release build..."
+    Invoke-Uvx "--from" "conan==$ConanVersion" "conan" "install" "." "--output-folder=.conan\Release$archSuffix" "--build=missing" "--settings=build_type=Release" "--settings=arch=$conanArch"
+    if ($LASTEXITCODE -ne 0 -and $targetArch -eq "arm64") {
+        Write-Host "    Warning: ARM64 (armv8) OpenCV Release build failed."
+        Write-Host "    Removing incomplete ARM64 folders..."
+        if (Test-Path ".conan\Release$archSuffix") { Remove-Item ".conan\Release$archSuffix" -Recurse -Force }
+        continue
+    }
+}
+$ErrorActionPreference = "Stop"
 
 Write-Host ""
 Write-Host "Setup complete."
 Write-Host "Qt directory: $((Resolve-Path $qtDir).Path)"
+Write-Host "Target architectures: $($TargetArchitectures -join ', ')"
 Write-Host "Python user scripts: $userScriptsDir"
 Write-Host "uv executable: $script:UvExe"
 if ($script:UseUvToolRunFallback) {

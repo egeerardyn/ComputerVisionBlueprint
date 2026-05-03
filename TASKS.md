@@ -3,21 +3,15 @@
 
 ## Short term milestones
 
-### CI pipeline [P0]
-- [x] add a GitHub Actions workflow that builds and runs tests on `ubuntu-latest` (gcc, Release)
-- [x] add a GitHub Actions workflow that builds and runs tests on `windows-latest` (x64 MSVC, Release)
-- [x] upload build artifacts and test results as workflow artifacts on both platforms
-- [ ] gate PRs on both CI workflows passing (branch protection rule) — requires GitHub repo settings
-
 ### Cross-compilation on Windows [P1]
-- [ ] building ARM64 binaries on an ARM64 machine (native ARM64 Conan profile + MSVC ARM64 toolset)
-- [ ] building ARM64 binaries on an x86-64 machine (cross-compile Conan profile + MSVC ARM64 toolset)
-- [ ] building x86-64 binaries on an ARM64 machine (already handled by `--settings=arch=x86_64` in setup.ps1)
-- [ ] building x86-64 binaries on an x86-64 machine (already supported)
-- [ ] expose a `-Arch` parameter in `compile.ps1` (`x64` or `arm64`) that sets the CMake `-A` flag and selects the matching Conan output folder
-- [ ] update `setup.ps1` to generate Conan output folders per target arch (e.g. `.conan/Debug-x64`, `.conan/Release-arm64`)
-- [ ] add corresponding `just` recipes: `build-debug-arm64`, `package-release-arm64`
-- [ ] document all four scenarios and the new `-Arch` parameter in `WINDOWS_BUILD.md`
+- [x] building x86-64 binaries on an ARM64 machine (already handled by `--settings=arch=x86_64` in setup.ps1, verified working)
+- [x] building x86-64 binaries on an x86-64 machine (already supported)
+- [x] expose a `-Arch` parameter in `compile.ps1` (`x64` or `arm64`) that sets the CMake `-A` flag and selects the matching Conan output folder
+- [x] update `setup.ps1` to generate Conan output folders per target arch (e.g. `.conan/Debug-x64`, `.conan/Release-arm64`)
+- [x] add corresponding `just` architecture selection support via optional recipe arguments / env vars instead of duplicating `*-arm64` recipes
+- [x] document all four scenarios and the new `-Arch` parameter in `WINDOWS_BUILD.md`
+- [ ] building ARM64 binaries on an ARM64 machine (OpenCV 4.8.1 NEON/SIMD incompatibility - blocked on OpenCV config review)
+- [ ] building ARM64 binaries on an x86-64 machine (cross-compile Conan profile + MSVC ARM64 toolset; pending ARM64 OpenCV resolution)
 
 ### VS2026 readiness [P1]
 - [ ] update `compile.ps1` generator string from `"Visual Studio 17 2022"` to `"Visual Studio 18 2026"` once VS2026 releases
