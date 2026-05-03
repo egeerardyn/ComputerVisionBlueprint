@@ -46,6 +46,7 @@ add_executable(ComputerVisionBlueprint
         src/Nodes/Data/ImageData.h
         src/Nodes/Data/ImageFormatData.h
         src/Nodes/Data/LinesSegmentData.h
+        src/Nodes/Data/MarkersData.h
         src/Nodes/Data/RectsData.h
         src/Nodes/Data/VariantData.h
         src/Nodes/Images/DrawLinesForm.ui
@@ -89,6 +90,8 @@ add_executable(ComputerVisionBlueprint
         src/Nodes/OpenCV/EqualizeHistModel.h
         src/Nodes/OpenCV/Filter2DModel.cpp
         src/Nodes/OpenCV/Filter2DModel.h
+        src/Nodes/OpenCV/DistanceTransformModel.cpp
+        src/Nodes/OpenCV/DistanceTransformModel.h
         src/Nodes/OpenCV/MorphologyModelBase.cpp
         src/Nodes/OpenCV/MorphologyModelBase.h
         src/Nodes/OpenCV/ErodeModel.cpp
@@ -107,6 +110,8 @@ add_executable(ComputerVisionBlueprint
         src/Nodes/OpenCV/MedianBlurModel.cpp
         src/Nodes/OpenCV/MedianBlurModel.h
         src/Nodes/OpenCV/OpenCVFilterUtils.h
+        src/Nodes/OpenCV/WatershedModel.cpp
+        src/Nodes/OpenCV/WatershedModel.h
         src/Nodes/Variables/FileVarForm.ui
         src/Nodes/Variables/FileVarModel.cpp
         src/Nodes/Variables/FileVarModel.h

@@ -51,6 +51,8 @@
 #include "Nodes/OpenCV/ErodeModel.h"
 #include "Nodes/OpenCV/DilateModel.h"
 #include "Nodes/OpenCV/MorphologyExModel.h"
+#include "Nodes/OpenCV/DistanceTransformModel.h"
+#include "Nodes/OpenCV/WatershedModel.h"
 #include "Nodes/OpenCV/HoughLinesPModel.h"
 #include "Nodes/OpenCV/CascadeClassifierModel.h"
 #include "Nodes/OpenCV/EqualizeHistModel.h"
