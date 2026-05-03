@@ -8,7 +8,7 @@
   - [x]  update the markdown documentation files to use the just file instead of calling the ps1/sh files directly
 - [x] fix application crashes, it seems to happen when an image does not have the right datatype (e.g. putting a color image to a morphological operator) [P0]
 - [x] the light/dark mode switch does not properly work: light mode appears dark as well. Fix this [P0]
-- [ ] add a test suite to test the available functionality [P0]
+- [x] add a test suite to test the available functionality [P0]
 - [ ] improve error handling in nodes (clear error states/messages instead of crashing) [P0]
 - [ ] add explicit datatype conversion nodes (depth/channel conversion with saturation and scaling options) [P0]
 - [ ] add graph validation before execution (port compatibility, missing inputs, cycle detection) [P0]

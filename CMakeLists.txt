@@ -186,3 +186,19 @@ target_link_libraries(ComputerVisionBlueprint PRIVATE
 target_include_directories(ComputerVisionBlueprint PRIVATE src)
 target_include_directories(ComputerVisionBlueprint PRIVATE 3rdparty/nodeeditor/src)
 target_include_directories(ComputerVisionBlueprint PRIVATE 3rdparty/nodeeditor/include/QtNodes/internal)
+
+enable_testing()
+
+add_executable(ComputerVisionBlueprintTests
+        tests/ConversionSmokeTest.cpp
+        src/Nodes/Conversor/MatQt.cpp
+)
+
+target_link_libraries(ComputerVisionBlueprintTests PRIVATE
+        ${OpenCV_LIBS}
+        Qt6::Gui
+)
+
+target_include_directories(ComputerVisionBlueprintTests PRIVATE src)
+
+add_test(NAME conversion_smoke_test COMMAND ComputerVisionBlueprintTests)
