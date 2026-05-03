@@ -103,6 +103,7 @@ std::shared_ptr<QtNodes::NodeDelegateModelRegistry> MainWindow::registerDataMode
     ret->registerModel<CutImageModel>("Images");
     ret->registerModel<ToIndexedColorModel>("Images");
     ret->registerModel<FromIndexedColorModel>("Images");
+    ret->registerModel<ImageSaveModel>("Images");
 
     ret->registerModel<ColorCVModel>("OpenCV");
     ret->registerModel<BlurModel>("OpenCV");

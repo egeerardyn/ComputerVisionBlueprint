@@ -178,6 +178,10 @@ add_executable(ComputerVisionBlueprint
         src/Nodes/Images/ToIndexedColorModel.h
         src/Nodes/Images/FromIndexedColorModel.cpp
         src/Nodes/Images/FromIndexedColorModel.h
+        src/Nodes/Images/ImageSaveUtils.cpp
+        src/Nodes/Images/ImageSaveUtils.h
+        src/Nodes/Images/ImageSaveModel.cpp
+        src/Nodes/Images/ImageSaveModel.h
         src/Nodes/DataOperations/ScaleRects.cpp
         src/Nodes/DataOperations/ScaleRects.h
         src/Nodes/Variables/RectModel.cpp
@@ -310,3 +314,16 @@ target_link_libraries(ComputerVisionBlueprintIndexedColorTests PRIVATE
 target_include_directories(ComputerVisionBlueprintIndexedColorTests PRIVATE src)
 
 add_test(NAME indexed_color_utils_test COMMAND ComputerVisionBlueprintIndexedColorTests)
+
+add_executable(ComputerVisionBlueprintImageSaveTests
+        tests/ImageSaveUtilsTest.cpp
+        src/Nodes/Images/ImageSaveUtils.cpp
+)
+
+target_link_libraries(ComputerVisionBlueprintImageSaveTests PRIVATE
+        Qt6::Gui
+)
+
+target_include_directories(ComputerVisionBlueprintImageSaveTests PRIVATE src)
+
+add_test(NAME image_save_utils_test COMMAND ComputerVisionBlueprintImageSaveTests)

@@ -21,7 +21,7 @@
 - [ ] add video file stream input node [P1]
 
 - [x] add nodes to convert between images that use indexed and non-indexed colors [P1]
-- [ ] add a node to save an image to file in different common file formats (e.g. TIFF, PNG, CSV, BMP, OpenEXR, ...) [P1]
+- [x] add a node to save an image to file in different common file formats (e.g. TIFF, PNG, CSV, BMP, OpenEXR, ...) [P1]
 - [ ] add an inspector dock, that shows the currently selected port's contents (e.g. show the image if it's an image) [P1]
 
 - [ ] add a simple matrix editor to edit small image kernels (e.g. 3x3 up to 21x21) [P2]
