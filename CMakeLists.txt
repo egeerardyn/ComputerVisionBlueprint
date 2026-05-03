@@ -75,18 +75,38 @@ add_executable(ComputerVisionBlueprint
         src/Nodes/OpenCV/CascadeClassifierForm.ui
         src/Nodes/OpenCV/CascadeClassifierModel.cpp
         src/Nodes/OpenCV/CascadeClassifierModel.h
+        src/Nodes/OpenCV/BilateralFilterForm.ui
+        src/Nodes/OpenCV/BilateralFilterModel.cpp
+        src/Nodes/OpenCV/BilateralFilterModel.h
+        src/Nodes/OpenCV/BoxFilterForm.ui
+        src/Nodes/OpenCV/BoxFilterModel.cpp
+        src/Nodes/OpenCV/BoxFilterModel.h
         src/Nodes/OpenCV/ColorCVModel.cpp
         src/Nodes/OpenCV/ColorCVModel.h
         src/Nodes/OpenCV/DetectMultiScaleModel.cpp
         src/Nodes/OpenCV/DetectMultiScaleModel.h
         src/Nodes/OpenCV/EqualizeHistModel.cpp
         src/Nodes/OpenCV/EqualizeHistModel.h
+        src/Nodes/OpenCV/Filter2DModel.cpp
+        src/Nodes/OpenCV/Filter2DModel.h
+        src/Nodes/OpenCV/MorphologyModelBase.cpp
+        src/Nodes/OpenCV/MorphologyModelBase.h
+        src/Nodes/OpenCV/ErodeModel.cpp
+        src/Nodes/OpenCV/ErodeModel.h
+        src/Nodes/OpenCV/DilateModel.cpp
+        src/Nodes/OpenCV/DilateModel.h
+        src/Nodes/OpenCV/MorphologyExModel.cpp
+        src/Nodes/OpenCV/MorphologyExModel.h
         src/Nodes/OpenCV/GaussianBlurForm.ui
         src/Nodes/OpenCV/GaussianBlurModel.cpp
         src/Nodes/OpenCV/GaussianBlurModel.h
         src/Nodes/OpenCV/HoughLinesPModel.cpp
         src/Nodes/OpenCV/HoughLinesPModel.h
         src/Nodes/OpenCV/HoughLinesPForm.ui
+        src/Nodes/OpenCV/MedianBlurForm.ui
+        src/Nodes/OpenCV/MedianBlurModel.cpp
+        src/Nodes/OpenCV/MedianBlurModel.h
+        src/Nodes/OpenCV/OpenCVFilterUtils.h
         src/Nodes/Variables/FileVarForm.ui
         src/Nodes/Variables/FileVarModel.cpp
         src/Nodes/Variables/FileVarModel.h
@@ -137,6 +157,8 @@ add_executable(ComputerVisionBlueprint
         src/Nodes/OpenCV/PyrDown.h
         src/Nodes/OpenCV/PyrUp.cpp
         src/Nodes/OpenCV/PyrUp.h
+        src/Nodes/OpenCV/SqrBoxFilterModel.cpp
+        src/Nodes/OpenCV/SqrBoxFilterModel.h
         src/Nodes/Variables/FileFromUrlModel.cpp
         src/Nodes/Variables/FileFromUrlModel.h
         src/Nodes/Variables/FileFromUrlForm.ui

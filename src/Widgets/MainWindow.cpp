@@ -98,6 +98,14 @@ std::shared_ptr<QtNodes::NodeDelegateModelRegistry> MainWindow::registerDataMode
     ret->registerModel<BlurModel>("OpenCV");
     ret->registerModel<CannyModel>("OpenCV");
     ret->registerModel<GaussianBlurModel>("OpenCV");
+    ret->registerModel<MedianBlurModel>("OpenCV");
+    ret->registerModel<BilateralFilterModel>("OpenCV");
+    ret->registerModel<BoxFilterModel>("OpenCV");
+    ret->registerModel<SqrBoxFilterModel>("OpenCV");
+    ret->registerModel<Filter2DModel>("OpenCV");
+    ret->registerModel<ErodeModel>("OpenCV");
+    ret->registerModel<DilateModel>("OpenCV");
+    ret->registerModel<MorphologyExModel>("OpenCV");
     ret->registerModel<HoughLinesPModel>("OpenCV");
     ret->registerModel<EqualizeHistModel>("OpenCV");
     ret->registerModel<PyrDown>("OpenCV");
@@ -119,4 +127,80 @@ std::shared_ptr<QtNodes::NodeDelegateModelRegistry> MainWindow::registerDataMode
     ret->registerModel<ScaleRects>("Data Operations");
 
     return ret;
+}
+
+void MainWindow::createThemeUi() {
+    auto* viewMenu = ui->menubar->addMenu("&View");
+    auto* themeMenu = ui->menubar->addMenu("&Theme");
+
+    m_themeDock = new QDockWidget("Theme Controls", this);
+    m_themeDock->setObjectName("ThemeControlsDock");
+    m_themeControlsWidget = new ThemeControlsWidget(m_themeManager, m_themeDock);
+    m_themeDock->setWidget(m_themeControlsWidget);
+    addDockWidget(Qt::RightDockWidgetArea, m_themeDock);
+    m_themeDock->hide();
+
+    auto* actionGroup = new QActionGroup(this);
+    actionGroup->setExclusive(true);
+
+    m_darkThemeAction = themeMenu->addAction("Dark");
+    m_darkThemeAction->setCheckable(true);
+    actionGroup->addAction(m_darkThemeAction);
+    connect(m_darkThemeAction, &QAction::triggered, this, [this]() {
+        m_themeManager->setPreset(ThemePreset::Dark);
+    });
+
+    m_lightThemeAction = themeMenu->addAction("Light");
+    m_lightThemeAction->setCheckable(true);
+    actionGroup->addAction(m_lightThemeAction);
+    connect(m_lightThemeAction, &QAction::triggered, this, [this]() {
+        m_themeManager->setPreset(ThemePreset::Light);
+    });
+
+    m_customThemeAction = themeMenu->addAction("Custom");
+    m_customThemeAction->setCheckable(true);
+    actionGroup->addAction(m_customThemeAction);
+    connect(m_customThemeAction, &QAction::triggered, this, [this]() {
+        m_themeManager->setPreset(ThemePreset::Custom);
+        m_themeDock->show();
+        m_themeDock->raise();
+    });
+
+    themeMenu->addSeparator();
+    auto* showThemeControlsAction = m_themeDock->toggleViewAction();
+    showThemeControlsAction->setText("Theme Controls");
+    themeMenu->addAction(showThemeControlsAction);
+    viewMenu->addAction(showThemeControlsAction);
+}
+
+void MainWindow::createHelpUi() {
+    auto* helpMenu = ui->menubar->addMenu("&Help");
+
+    m_helpDock = new QDockWidget("Help", this);
+    m_helpDock->setObjectName("HelpDock");
+    m_helpWidget = new HelpWidget(m_helpDock);
+    m_helpDock->setWidget(m_helpWidget);
+    addDockWidget(Qt::RightDockWidgetArea, m_helpDock);
+    m_helpDock->show();
+
+    if (m_themeDock) {
+        tabifyDockWidget(m_themeDock, m_helpDock);
+    }
+
+    auto* showHelpAction = m_helpDock->toggleViewAction();
+    showHelpAction->setText("Help");
+    helpMenu->addAction(showHelpAction);
+}
+
+void MainWindow::updateThemeActions() const {
+    const ThemePreset preset = m_themeManager->configuration().preset;
+    if (m_darkThemeAction) {
+        m_darkThemeAction->setChecked(preset == ThemePreset::Dark);
+    }
+    if (m_lightThemeAction) {
+        m_lightThemeAction->setChecked(preset == ThemePreset::Light);
+    }
+    if (m_customThemeAction) {
+        m_customThemeAction->setChecked(preset == ThemePreset::Custom);
+    }
 }
