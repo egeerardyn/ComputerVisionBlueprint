@@ -132,6 +132,10 @@ add_executable(ComputerVisionBlueprint
         src/Nodes/OpenCV/HistogramModel.h
         src/Nodes/OpenCV/ClaheModel.cpp
         src/Nodes/OpenCV/ClaheModel.h
+        src/Nodes/OpenCV/TemplateMatchingUtils.cpp
+        src/Nodes/OpenCV/TemplateMatchingUtils.h
+        src/Nodes/OpenCV/TemplateMatchingModel.cpp
+        src/Nodes/OpenCV/TemplateMatchingModel.h
         src/Nodes/OpenCV/MedianBlurForm.ui
         src/Nodes/OpenCV/MedianBlurModel.cpp
         src/Nodes/OpenCV/MedianBlurModel.h
@@ -274,3 +278,16 @@ target_link_libraries(ComputerVisionBlueprintHistogramClaheTests PRIVATE
 target_include_directories(ComputerVisionBlueprintHistogramClaheTests PRIVATE src)
 
 add_test(NAME histogram_clahe_utils_test COMMAND ComputerVisionBlueprintHistogramClaheTests)
+
+add_executable(ComputerVisionBlueprintTemplateMatchingTests
+        tests/TemplateMatchingUtilsTest.cpp
+        src/Nodes/OpenCV/TemplateMatchingUtils.cpp
+)
+
+target_link_libraries(ComputerVisionBlueprintTemplateMatchingTests PRIVATE
+        ${OpenCV_LIBS}
+)
+
+target_include_directories(ComputerVisionBlueprintTemplateMatchingTests PRIVATE src)
+
+add_test(NAME template_matching_utils_test COMMAND ComputerVisionBlueprintTemplateMatchingTests)

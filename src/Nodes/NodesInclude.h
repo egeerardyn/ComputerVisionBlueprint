@@ -60,6 +60,7 @@
 #include "Nodes/OpenCV/ScharrGradientModel.h"
 #include "Nodes/OpenCV/HistogramModel.h"
 #include "Nodes/OpenCV/ClaheModel.h"
+#include "Nodes/OpenCV/TemplateMatchingModel.h"
 #include "Nodes/OpenCV/CascadeClassifierModel.h"
 #include "Nodes/OpenCV/EqualizeHistModel.h"
 #include "Nodes/OpenCV/DetectMultiScaleModel.h"
