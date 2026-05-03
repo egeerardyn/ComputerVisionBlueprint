@@ -176,14 +176,14 @@ Use this space to show useful examples of how a project can be used. Additional 
   - [x] Specific how to build
 
 - [ ] User interface
-  - [ ] Dark mode
-  - [ ] Light mode
-  - [ ] Customizable theme
+  - [x] Dark mode
+  - [x] Light mode
+  - [x] Customizable theme
   - [x] Drag and drop nodes
   - [ ] Internationalization
     - [ ] Spanish
   - [ ] Save and load workflows
-  - [ ] Help widget
+  - [x] Help widget
 
 - [x] Image conversion formats
 
@@ -198,14 +198,14 @@ Use this space to show useful examples of how a project can be used. Additional 
   - [ ] Pyramids
     - [ ] Pyr Up
     - [x] Pyr Down
-  - [ ] Median Blur
-  - [ ] Bilateral Filter
-  - [ ] Box Filter
-  - [ ] SQR Box Filter
-  - [ ] Filter2D
-  - [ ] Erode
-  - [ ] Dilate
-  - [ ] MorphologyEx
+  - [x] Median Blur
+  - [x] Bilateral Filter
+  - [x] Box Filter
+  - [x] SQR Box Filter
+  - [x] Filter2D
+  - [x] Erode
+  - [x] Dilate
+  - [x] MorphologyEx
   - [ ] Distance Transform
   - [ ] Watershed
 
@@ -223,9 +223,9 @@ Use this space to show useful examples of how a project can be used. Additional 
     - [ ] Face landmarks
 
 - [ ] Draws 
-    - [x] Draw rectangles
-    - [ ] Draw circles
-    - [x] Draw lines
+  - [x] Draw rectangles
+  - [ ] Draw circles
+  - [x] Draw lines
 
 See the [open issues](https://github.com/PabloPicose/ComputerVisionBlueprint/issues) for a full list of proposed features (and known issues).
 
