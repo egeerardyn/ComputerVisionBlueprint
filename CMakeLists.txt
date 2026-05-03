@@ -98,6 +98,10 @@ add_executable(ComputerVisionBlueprint
         src/Nodes/OpenCV/Filter2DModel.h
         src/Nodes/OpenCV/DistanceTransformModel.cpp
         src/Nodes/OpenCV/DistanceTransformModel.h
+        src/Nodes/OpenCV/ConvertDepthChannelsModel.cpp
+        src/Nodes/OpenCV/ConvertDepthChannelsModel.h
+        src/Nodes/OpenCV/TypeConversionUtils.cpp
+        src/Nodes/OpenCV/TypeConversionUtils.h
         src/Nodes/OpenCV/MorphologyModelBase.cpp
         src/Nodes/OpenCV/MorphologyModelBase.h
         src/Nodes/OpenCV/ErodeModel.cpp
@@ -202,3 +206,16 @@ target_link_libraries(ComputerVisionBlueprintTests PRIVATE
 target_include_directories(ComputerVisionBlueprintTests PRIVATE src)
 
 add_test(NAME conversion_smoke_test COMMAND ComputerVisionBlueprintTests)
+
+add_executable(ComputerVisionBlueprintTypeConversionTests
+        tests/TypeConversionUtilsTest.cpp
+        src/Nodes/OpenCV/TypeConversionUtils.cpp
+)
+
+target_link_libraries(ComputerVisionBlueprintTypeConversionTests PRIVATE
+        ${OpenCV_LIBS}
+)
+
+target_include_directories(ComputerVisionBlueprintTypeConversionTests PRIVATE src)
+
+add_test(NAME type_conversion_utils_test COMMAND ComputerVisionBlueprintTypeConversionTests)

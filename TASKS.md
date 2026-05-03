@@ -11,7 +11,7 @@
 - [x] add a test suite to test the available functionality [P0]
 - [x] improve error handling in nodes (clear error states/messages instead of crashing) [P0]
 - [x] add recipes in the just file to compile and run the test suite, also update AGENTS.md and other documentation to reflect this. New functionality should be covered by tests if it can be done
-- [ ] add explicit datatype conversion nodes (depth/channel conversion with saturation and scaling options) [P0]
+- [x] add explicit datatype conversion nodes (depth/channel conversion with saturation and scaling options) [P0]
 
 - [ ] implement OpenCV circle detection (via Hough transform) [P1]
 - [ ] add Sobel/Scharr edge and gradient nodes [P1]
