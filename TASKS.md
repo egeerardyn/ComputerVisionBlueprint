@@ -4,10 +4,10 @@
 ## Short term milestones
 
 ### CI pipeline [P0]
-- [ ] add a GitHub Actions workflow that builds and runs tests on `ubuntu-latest` (gcc, Release)
-- [ ] add a GitHub Actions workflow that builds and runs tests on `windows-latest` (x64 MSVC, Release)
-- [ ] upload build artifacts and test results as workflow artifacts on both platforms
-- [ ] gate PRs on both CI workflows passing (branch protection rule)
+- [x] add a GitHub Actions workflow that builds and runs tests on `ubuntu-latest` (gcc, Release)
+- [x] add a GitHub Actions workflow that builds and runs tests on `windows-latest` (x64 MSVC, Release)
+- [x] upload build artifacts and test results as workflow artifacts on both platforms
+- [ ] gate PRs on both CI workflows passing (branch protection rule) — requires GitHub repo settings
 
 ### Cross-compilation on Windows [P1]
 - [ ] building ARM64 binaries on an ARM64 machine (native ARM64 Conan profile + MSVC ARM64 toolset)
