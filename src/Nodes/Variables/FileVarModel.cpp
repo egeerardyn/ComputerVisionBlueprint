@@ -3,8 +3,15 @@
 //
 
 #include "FileVarModel.h"
+#include "Nodes/NodeHelpInfo.h"
 #include "ui_FileVarForm.h"
 #include <QFileDialog>
+
+namespace {
+const NodeHelpRegistration kFileVarModelHelp(QStringLiteral("File"),
+                                             makeNodeHelp(QStringLiteral("Loads a file path into the graph so nodes can consume external resources such as classifiers or other assets."),
+                                                          QStringLiteral("https://github.com/PabloPicose/ComputerVisionBlueprint")));
+}
 
 FileVarModel::FileVarModel() {
 }

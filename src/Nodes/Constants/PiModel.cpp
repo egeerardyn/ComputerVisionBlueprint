@@ -3,7 +3,14 @@
 //
 
 #include "PiModel.h"
+#include "Nodes/NodeHelpInfo.h"
 #include <opencv2/opencv.hpp>
+
+namespace {
+const NodeHelpRegistration kPiModelHelp(QStringLiteral("Pi"),
+                                        makeNodeHelp(QStringLiteral("Outputs the constant pi as a numeric value so other nodes can reuse it in formulas and size calculations."),
+                                                     QStringLiteral("https://github.com/PabloPicose/ComputerVisionBlueprint")));
+}
 
 PiModel::PiModel() {
     m_pi = std::make_shared<VariantData>(CV_PI);

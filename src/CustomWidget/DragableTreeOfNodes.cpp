@@ -12,6 +12,28 @@
 DragableTreeOfNodes::DragableTreeOfNodes(QWidget* parent) : QTreeWidget(parent) {
     setDragEnabled(true);
     setSelectionMode(QAbstractItemView::SingleSelection);
+
+    const auto publishSelection = [this](QTreeWidgetItem* item) {
+        if (!item) {
+            emit nodeSelectionCleared();
+            return;
+        }
+
+        const QString nodeName = item->text(1).trimmed();
+        if (nodeName.isEmpty()) {
+            emit nodeSelectionCleared();
+            return;
+        }
+
+        emit nodeSelected(nodeName);
+    };
+
+    connect(this, &QTreeWidget::currentItemChanged, this, [publishSelection](QTreeWidgetItem* current, QTreeWidgetItem*) {
+        publishSelection(current);
+    });
+    connect(this, &QTreeWidget::itemClicked, this, [publishSelection](QTreeWidgetItem* item, int) {
+        publishSelection(item);
+    });
 }
 
 DragableTreeOfNodes::~DragableTreeOfNodes() = default;

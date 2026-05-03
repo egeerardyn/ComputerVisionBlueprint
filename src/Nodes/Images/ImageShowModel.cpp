@@ -1,11 +1,17 @@
 #include "ImageShowModel.hpp"
-
+#include "Nodes/NodeHelpInfo.h"
 
 #include <QtNodes/NodeDelegateModelRegistry>
 
 #include <QtCore/QDir>
 #include <QtCore/QEvent>
 #include <QtWidgets/QFileDialog>
+
+namespace {
+const NodeHelpRegistration kImageShowModelHelp(QStringLiteral("Image display"),
+                                               makeNodeHelp(QStringLiteral("Displays an incoming image inside the node so you can preview the current result at any stage of the pipeline."),
+                                                            QStringLiteral("https://github.com/PabloPicose/ComputerVisionBlueprint")));
+}
 
 ImageShowModel::ImageShowModel()
     : _label(new QLabel("Image will appear here")) {

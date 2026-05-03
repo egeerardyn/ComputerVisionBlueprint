@@ -3,10 +3,17 @@
 //
 
 #include "EqualizeHistModel.h"
+#include "Nodes/NodeHelpInfo.h"
 
 #include "Nodes/Conversor/MatQt.h"
 #include <QtConcurrent/QtConcurrent>
 #include <QLabel>
+
+namespace {
+const NodeHelpRegistration kEqualizeHistModelHelp(QStringLiteral("Equalize Hist"),
+                                                  makeNodeHelp(QStringLiteral("Equalizes the histogram to improve contrast, especially on grayscale images with low dynamic range."),
+                                                               QStringLiteral("https://docs.opencv.org/4.x/d5/daf/tutorial_py_histogram_equalization.html")));
+}
 
 EqualizeHistModel::EqualizeHistModel() {
     connect(&m_watcher, &QFutureWatcher<QPair<QImage, quint64>>::finished, this, &EqualizeHistModel::processFinished);

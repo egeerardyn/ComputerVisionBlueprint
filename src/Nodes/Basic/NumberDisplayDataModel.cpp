@@ -1,6 +1,13 @@
 #include "NumberDisplayDataModel.hpp"
+#include "Nodes/NodeHelpInfo.h"
 
 #include <QtWidgets/QLabel>
+
+namespace {
+const NodeHelpRegistration kNumberDisplayDataModelHelp(QStringLiteral("Result"),
+                                                       makeNodeHelp(QStringLiteral("Displays the numeric result arriving at its input. This is useful for inspecting intermediate values while building a workflow."),
+                                                                    QStringLiteral("https://github.com/PabloPicose/ComputerVisionBlueprint")));
+}
 
 NumberDisplayDataModel::NumberDisplayDataModel()
     : _label{nullptr}

@@ -3,6 +3,7 @@
 //
 
 #include "CameraModel.h"
+#include "Nodes/NodeHelpInfo.h"
 #include "ui_CameraForm.h"
 
 #include <QCamera>
@@ -11,6 +12,12 @@
 #include <QVideoSink>
 #include <QVideoFrame>
 #include <QMediaDevices>
+
+namespace {
+const NodeHelpRegistration kCameraModelHelp(QStringLiteral("Camera"),
+                                            makeNodeHelp(QStringLiteral("Captures frames from an available camera device and outputs the live image stream into the graph."),
+                                                         QStringLiteral("https://doc.qt.io/qt-6/qcamera.html")));
+}
 
 
 CameraModel::CameraModel() {

@@ -4,6 +4,14 @@
 
 #include "RectVarModel.h"
 
+#include "Nodes/NodeHelpInfo.h"
+
+namespace {
+const NodeHelpRegistration kRectVarModelHelp(QStringLiteral("Rects"),
+                                             makeNodeHelp(QStringLiteral("Collects rectangle inputs into a reusable rectangles output, which is helpful when combining detections from multiple sources."),
+                                                          QStringLiteral("https://github.com/PabloPicose/ComputerVisionBlueprint")));
+}
+
 RectVarModel::RectVarModel() {
 }
 

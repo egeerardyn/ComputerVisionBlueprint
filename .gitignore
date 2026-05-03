@@ -7,3 +7,6 @@ CMakeUserPresets.json
 linuxdeploy*
 .idea
 .venv
+build/
+*.log
+.qt/

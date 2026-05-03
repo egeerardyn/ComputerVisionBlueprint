@@ -1,0 +1,90 @@
+name: CI Windows
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Clone nodeeditor
+        run: |
+          if (-not (Test-Path "3rdparty\nodeeditor")) {
+            git clone --depth 1 https://github.com/paceholder/nodeeditor.git 3rdparty\nodeeditor
+          }
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Install Qt 6.8.3
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.8.3'
+          host: windows
+          target: desktop
+          arch: win64_msvc2022_64
+          modules: qtmultimedia
+          cache: true
+
+      - name: Add Qt bin to PATH
+        run: Add-Content $env:GITHUB_PATH "$env:QT_ROOT_DIR\bin"
+
+      - name: Cache Conan packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.conan2
+          key: conan-windows-msvc-x64-release-${{ hashFiles('conanfile.txt') }}
+          restore-keys: conan-windows-msvc-x64-release-
+
+      - name: Configure Conan profile
+        run: uvx --from "conan==2.11" conan profile detect --force
+
+      - name: Install Conan dependencies (Release)
+        run: |
+          uvx --from "conan==2.11" conan install . `
+            --output-folder=.conan\Release `
+            --build=missing `
+            --settings=build_type=Release `
+            --settings=arch=x86_64
+
+      - name: Configure (Release)
+        run: |
+          cmake `
+            -S . `
+            -B build\vs2022-release `
+            -G "Visual Studio 17 2022" `
+            -A x64 `
+            -DCMAKE_POLICY_DEFAULT_CMP0091=NEW `
+            "-DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}\.conan\Release\conan_toolchain.cmake" `
+            "-DCMAKE_PREFIX_PATH=$env:QT_ROOT_DIR;${{ github.workspace }}\.conan\Release" `
+            "-DOpenCV_DIR=${{ github.workspace }}\.conan\Release"
+
+      - name: Build (Release)
+        run: cmake --build build\vs2022-release --config Release --parallel
+
+      - name: Run tests
+        shell: cmd
+        run: |
+          call .conan\Release\conanrunenv-release-x86_64.bat
+          ctest --test-dir build\vs2022-release -C Release --output-on-failure --output-junit test-results-windows.xml
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-windows
+          path: test-results-windows.xml
+          if-no-files-found: warn
+
+      - name: Upload build artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-release-binary
+          path: build\vs2022-release\Release\ComputerVisionBlueprint.exe
+          if-no-files-found: warn

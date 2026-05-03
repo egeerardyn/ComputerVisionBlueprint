@@ -3,11 +3,18 @@
 //
 
 #include "ConvertImageToModel.h"
+#include "Nodes/NodeHelpInfo.h"
 #include "ui_ConvertImageToForm.h"
 
 #include <QElapsedTimer>
 #include <QMetaEnum>
 #include <QtConcurrent/QtConcurrentRun>
+
+namespace {
+const NodeHelpRegistration kConvertImageToModelHelp(QStringLiteral("Convert Image"),
+                                                    makeNodeHelp(QStringLiteral("Converts an image into another representation or format expected by the rest of the workflow."),
+                                                                 QStringLiteral("https://docs.opencv.org/4.x/da/d54/group__imgproc__transform.html")));
+}
 
 ConvertImageToModel::ConvertImageToModel() {
     connect(&m_watcher, &QFutureWatcher<QPair<QImage, quint64>>::finished, this, &ConvertImageToModel::processFinished);

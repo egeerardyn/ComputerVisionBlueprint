@@ -13,15 +13,15 @@ public:
 public:
     QString caption() const override { return QStringLiteral("Subtraction"); }
 
-    virtual bool portCaptionVisible(PortType portType, PortIndex portIndex) const override {
+    virtual bool portCaptionVisible(QtNodes::PortType portType, QtNodes::PortIndex portIndex) const override {
         Q_UNUSED(portType);
         Q_UNUSED(portIndex);
         return true;
     }
 
-    virtual QString portCaption(PortType portType, PortIndex portIndex) const override {
+    virtual QString portCaption(QtNodes::PortType portType, QtNodes::PortIndex portIndex) const override {
         switch (portType) {
-            case PortType::In:
+            case QtNodes::PortType::In:
                 if (portIndex == 0)
                     return QStringLiteral("Minuend");
                 else if (portIndex == 1)
@@ -29,7 +29,7 @@ public:
 
                 break;
 
-            case PortType::Out:
+            case QtNodes::PortType::Out:
                 return QStringLiteral("Result");
 
             default:

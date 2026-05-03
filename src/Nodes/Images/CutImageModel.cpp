@@ -3,7 +3,14 @@
 //
 
 #include "CutImageModel.h"
+#include "Nodes/NodeHelpInfo.h"
 #include "Nodes/Data/VariantData.h"
+
+namespace {
+const NodeHelpRegistration kCutImageModelHelp(QStringLiteral("Cut Image"),
+                                              makeNodeHelp(QStringLiteral("Crops the input image to a selected rectangular region and outputs only that sub-image."),
+                                                           QStringLiteral("https://docs.opencv.org/4.x/da/d54/group__imgproc__transform.html")));
+}
 
 QString CutImageModel::caption() const {
     return QString("Cut Image");

@@ -3,7 +3,14 @@
 //
 
 #include "RectModel.h"
+#include "Nodes/NodeHelpInfo.h"
 #include "ui_RectForm.h"
+
+namespace {
+const NodeHelpRegistration kRectModelHelp(QStringLiteral("Rect"),
+                                          makeNodeHelp(QStringLiteral("Creates a single rectangle value that can define a crop region, drawing overlay, or region of interest."),
+                                                       QStringLiteral("https://github.com/PabloPicose/ComputerVisionBlueprint")));
+}
 
 RectModel::RectModel() {
     m_outRect = QRect(0, 0, 0, 0);

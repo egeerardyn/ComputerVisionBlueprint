@@ -3,6 +3,7 @@
 //
 
 #include "BlurModel.h"
+#include "Nodes/NodeHelpInfo.h"
 
 #include <QSpinBox>
 #include <QGridLayout>
@@ -14,6 +15,12 @@
 #include <QtConcurrent/QtConcurrent>
 
 #include "ui_BlurForm.h"
+
+namespace {
+const NodeHelpRegistration kBlurModelHelp(QStringLiteral("Blur"),
+                                          makeNodeHelp(QStringLiteral("Applies a normalized box blur to smooth noise and soften detail in the input image."),
+                                                       QStringLiteral("https://docs.opencv.org/4.x/d4/d86/group__imgproc__filter.html")));
+}
 
 
 BlurModel::BlurModel() {

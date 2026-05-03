@@ -40,6 +40,10 @@ QImage MatToQImage(const cv::Mat& mat) {
 
 
 cv::Mat QImageToMat(const QImage& image) {
+    if (image.isNull()) {
+        return {};
+    }
+
     cv::Mat mat;
     switch (image.format()) {
         case QImage::Format_ARGB32:
@@ -58,7 +62,7 @@ cv::Mat QImageToMat(const QImage& image) {
             QImage swapped = image.rgbSwapped();
             mat = cv::Mat(swapped.height(), swapped.width(), CV_8UC3,
                           const_cast<uchar *>(swapped.bits()), swapped.bytesPerLine());
-            break;
+            return mat.clone();
         }
         case QImage::Format_Grayscale8: {
             mat = cv::Mat(image.height(), image.width(), CV_8UC1,
@@ -74,10 +78,14 @@ cv::Mat QImageToMat(const QImage& image) {
         }
 
         default: {
-            qCritical() << "QImage format not handled in switch:" << image.format();
-            // Unsupported format
-            break;
+            // Fallback through ARGB32 so uncommon formats still convert safely.
+            QImage converted = image.convertToFormat(QImage::Format_ARGB32);
+            mat = cv::Mat(converted.height(), converted.width(), CV_8UC4,
+                          const_cast<uchar *>(converted.bits()), converted.bytesPerLine());
+            return mat.clone();
         }
     }
-    return mat;
+
+    // Always clone to decouple cv::Mat lifetime from QImage backing storage.
+    return mat.clone();
 }

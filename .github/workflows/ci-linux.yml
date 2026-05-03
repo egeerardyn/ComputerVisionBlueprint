@@ -1,0 +1,129 @@
+name: CI Linux
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Clone nodeeditor
+        run: |
+          if [ ! -d "3rdparty/nodeeditor" ]; then
+            git clone --depth 1 https://github.com/paceholder/nodeeditor.git 3rdparty/nodeeditor
+          fi
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y \
+            build-essential cmake ninja-build git pkg-config \
+            libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 \
+            libxcb-sync1 libxcb-xfixes0 libxcb-shape0 libx11-xcb1 \
+            libxkbcommon-x11-0 libxcb-icccm4 libegl1-mesa-dev libpulse-dev
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Cache Qt installation
+        uses: actions/cache@v4
+        with:
+          path: .qt
+          key: qt-linux-6.8.3-gcc_64-qtmultimedia-v2
+
+      - name: Install Qt 6.8.3
+        run: |
+          if [ ! -x ".qt/6.8.3/gcc_64/bin/qmake" ] && [ ! -x ".qt/6.8.3/linux_gcc_64/bin/qmake" ]; then
+            QT_ARCH=$(uvx --from aqtinstall aqt list-qt linux desktop --arch 6.8.3 | tr ' ' '\n' | grep -E '^(gcc_64|linux_gcc_64)$' | head -n 1)
+
+            if [ -z "$QT_ARCH" ]; then
+              echo "Could not resolve a supported Linux desktop Qt architecture for 6.8.3."
+              uvx --from aqtinstall aqt list-qt linux desktop --arch 6.8.3
+              exit 1
+            fi
+
+            if uvx --from aqtinstall aqt list-qt linux desktop --modules 6.8.3 "$QT_ARCH" | tr ' ' '\n' | grep -qx "qtmultimedia"; then
+              uvx --from aqtinstall aqt install-qt linux desktop 6.8.3 "$QT_ARCH" -m qtmultimedia -O .qt
+            else
+              echo "qtmultimedia is not listed for arch '$QT_ARCH'; installing base Qt only."
+              uvx --from aqtinstall aqt install-qt linux desktop 6.8.3 "$QT_ARCH" -O .qt
+            fi
+          fi
+
+      - name: Resolve Qt directory
+        run: |
+          if [ -x ".qt/6.8.3/gcc_64/bin/qmake" ]; then
+            echo "QT_DIR=${{ github.workspace }}/.qt/6.8.3/gcc_64" >> $GITHUB_ENV
+          elif [ -x ".qt/6.8.3/linux_gcc_64/bin/qmake" ]; then
+            echo "QT_DIR=${{ github.workspace }}/.qt/6.8.3/linux_gcc_64" >> $GITHUB_ENV
+          else
+            echo "Qt installation not found in expected directories."
+            find .qt -maxdepth 4 -type f -name qmake || true
+            exit 1
+          fi
+
+      - name: Add Qt bin to PATH
+        run: echo "$QT_DIR/bin" >> $GITHUB_PATH
+
+      - name: Cache Conan packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.conan2
+          key: conan-linux-gcc-release-${{ hashFiles('conanfile.txt') }}
+          restore-keys: conan-linux-gcc-release-
+
+      - name: Configure Conan profile
+        run: uvx --from "conan==2.11" conan profile detect --force
+
+      - name: Install Conan dependencies (Release)
+        run: |
+          uvx --from "conan==2.11" conan install . \
+            --output-folder=.conan/Release \
+            --build=missing \
+            --settings=build_type=Release \
+            -c tools.system.package_manager:mode=install
+
+      - name: Configure (Release)
+        run: |
+          cmake \
+            -S . \
+            -B build/linux-release \
+            -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_TOOLCHAIN_FILE=.conan/Release/conan_toolchain.cmake \
+            "-DCMAKE_PREFIX_PATH=$QT_DIR;.conan/Release" \
+            -DOpenCV_DIR=.conan/Release
+
+      - name: Build (Release)
+        run: cmake --build build/linux-release --parallel
+
+      - name: Run tests
+        run: |
+          for env_script in .conan/Release/conanrunenv-release-*.sh; do
+            if [ -f "$env_script" ]; then
+              source "$env_script"
+            fi
+          done
+          ctest --test-dir build/linux-release --output-on-failure \
+            --output-junit test-results-linux.xml
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-linux
+          path: test-results-linux.xml
+          if-no-files-found: warn
+
+      - name: Upload build artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-release-binary
+          path: build/linux-release/ComputerVisionBlueprint
+          if-no-files-found: warn

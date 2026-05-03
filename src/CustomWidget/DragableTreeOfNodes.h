@@ -23,8 +23,14 @@ public:
 
     QMap<QString, QStringList> getMapGroupNames() const { return m_mapGroupNames; }
 
+signals:
+    void nodeSelected(const QString& nodeName);
+
+    void nodeSelectionCleared();
+
 protected:
     void startDrag(Qt::DropActions supportedActions) override;
+
 private:
     QMap<QString, QStringList> m_mapGroupNames;
 };

@@ -3,6 +3,7 @@
 //
 
 #include "DrawLinesModel.h"
+#include "Nodes/NodeHelpInfo.h"
 
 #include <QPainter>
 #include <QPen>
@@ -10,6 +11,12 @@
 #include <QtConcurrent/QtConcurrent>
 
 #include "ui_DrawLinesForm.h"
+
+namespace {
+const NodeHelpRegistration kDrawLinesModelHelp(QStringLiteral("Draw Lines"),
+                                               makeNodeHelp(QStringLiteral("Draws line segments on the input image and outputs the rendered result."),
+                                                            QStringLiteral("https://docs.opencv.org/4.x/d6/d6e/group__imgproc__draw.html")));
+}
 
 DrawLinesModel::DrawLinesModel() {
     connect(&m_watcher, &QFutureWatcher<QPair<QImage, quint64>>::finished, this, &DrawLinesModel::processFinished);

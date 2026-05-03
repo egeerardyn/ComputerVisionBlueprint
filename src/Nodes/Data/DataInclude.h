@@ -6,6 +6,9 @@
 #define DATAINCLUDE_H
 
 #include "Nodes/Data/LinesSegmentData.h"
+#include "Nodes/Data/MarkersData.h"
+#include "Nodes/Data/CircleData.h"
+#include "Nodes/Data/CirclesData.h"
 #include "Nodes/Data/ImageData.h"
 #include "Nodes/Data/ImageFormatData.h"
 #include "Nodes/Data/FileData.h"

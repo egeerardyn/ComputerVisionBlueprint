@@ -3,11 +3,19 @@
 //
 
 #include "CannyModel.h"
+#include "Nodes/NodeHelpInfo.h"
 #include "Nodes/Data/DataInclude.h"
 #include <opencv2/opencv.hpp>
 #include "Nodes/Conversor/MatQt.h"
+#include "Nodes/OpenCV/OpenCVFilterUtils.h"
 #include <QtConcurrent/QtConcurrent>
 #include "ui_CannyForm.h"
+
+namespace {
+const NodeHelpRegistration kCannyModelHelp(QStringLiteral("Canny"),
+                                           makeNodeHelp(QStringLiteral("Runs the Canny edge detector and outputs an edge map based on the current threshold settings."),
+                                                        QStringLiteral("https://docs.opencv.org/4.x/da/d22/tutorial_py_canny.html")));
+}
 
 CannyModel::CannyModel() {
     connect(&m_watcher, &QFutureWatcher<QPixmap>::finished, this, &CannyModel::processFinished);
@@ -194,12 +202,22 @@ QImage CannyModel::processImage(const QImage& image, const double lowThreshold, 
                                 const int apertureSize,
                                 const bool useL2Gradient) {
     const cv::Mat src = QImageToMat(image);
+    if (src.empty()) {
+        return {};
+    }
+
     cv::Mat dst;
     try {
         cv::Canny(src, dst, lowThreshold, highThreshold, apertureSize, useL2Gradient);
-    } catch (cv::Exception& e) {
-        qDebug() << e.what();
-        return QImage();
+    } catch (const cv::Exception& exception) {
+        LogOpenCvError("Canny", exception);
+        return {};
+    } catch (const std::exception& exception) {
+        LogStdError("Canny", exception);
+        return {};
+    } catch (...) {
+        LogUnknownError("Canny");
+        return {};
     }
     return MatToQImage(dst);
 }
