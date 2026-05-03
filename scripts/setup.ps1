@@ -4,8 +4,7 @@ param(
     [string]$QtInstallRoot = ".qt",
     [string]$ConanVersion = "2.11",
     [string]$NodeEditorRepo = "https://github.com/paceholder/nodeeditor.git",
-    [ValidateSet("x64", "arm64")]
-    [string[]]$TargetArchitectures = @("x64", "arm64")
+    [string[]]$TargetArchitectures = @()
 )
 
 $ErrorActionPreference = "Stop"
@@ -36,6 +35,72 @@ function Get-QtFolderName {
         "win64_msvc2022_arm64_cross_compiled" { return "msvc2022_arm64_cross_compiled" }
         default { return ($Arch -replace "^win64_", "") }
     }
+}
+
+function Resolve-BuildArchitecture {
+    param([string]$RequestedArch)
+
+    if (-not $RequestedArch) {
+        throw "Architecture value cannot be empty. Use x64 or arm64."
+    }
+
+    $resolvedArch = $RequestedArch.Trim().ToLowerInvariant()
+    switch ($resolvedArch) {
+        "amd64" { return "x64" }
+        "x86_64" { return "x64" }
+        "x64" { return "x64" }
+        "arm64" { return "arm64" }
+        default { throw "Unsupported architecture '$resolvedArch'. Use x64 or arm64." }
+    }
+}
+
+function Resolve-TargetArchitectures {
+    param([string[]]$RequestedArchitectures)
+
+    $rawArchitectures = @($RequestedArchitectures | Where-Object { $_ })
+    if ($rawArchitectures.Count -eq 0) {
+        if ($env:CVB_TARGET_ARCHS) {
+            $rawArchitectures = @($env:CVB_TARGET_ARCHS)
+        }
+        elseif ($env:CVB_ARCH) {
+            $rawArchitectures = @($env:CVB_ARCH)
+        }
+        else {
+            $nativeArchitecture = $env:PROCESSOR_ARCHITECTURE
+            if (-not $nativeArchitecture -and $env:PROCESSOR_ARCHITEW6432) {
+                $nativeArchitecture = $env:PROCESSOR_ARCHITEW6432
+            }
+            if (-not $nativeArchitecture) {
+                try {
+                    $nativeArchitecture = [System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString()
+                }
+                catch {
+                }
+            }
+            if (-not $nativeArchitecture) {
+                throw "Unable to determine native architecture. Set CVB_TARGET_ARCHS or CVB_ARCH explicitly."
+            }
+
+            $rawArchitectures = @($nativeArchitecture)
+        }
+    }
+
+    $resolvedArchitectures = New-Object System.Collections.Generic.List[string]
+    foreach ($entry in $rawArchitectures) {
+        foreach ($candidate in ($entry -split ',')) {
+            $candidate = $candidate.Trim()
+            if (-not $candidate) {
+                continue
+            }
+
+            $resolvedCandidate = Resolve-BuildArchitecture -RequestedArch $candidate
+            if (-not $resolvedArchitectures.Contains($resolvedCandidate)) {
+                $resolvedArchitectures.Add($resolvedCandidate)
+            }
+        }
+    }
+
+    return $resolvedArchitectures.ToArray()
 }
 
 function Ensure-Uv {
@@ -77,6 +142,8 @@ function Invoke-Uvx {
 Write-Host "Ensuring uv tooling is available..."
 $userScriptsDir = Add-UserPythonScriptsToPath
 $script:UvExe = Ensure-Uv
+
+$TargetArchitectures = Resolve-TargetArchitectures -RequestedArchitectures $TargetArchitectures
 
 $uvxCmd = Get-Command uvx -ErrorAction SilentlyContinue
 if ($uvxCmd) {
