@@ -14,6 +14,7 @@
 #include <QtConcurrent/QtConcurrent>
 #include "Nodes/Conversor/MatQt.h"
 #include <QElapsedTimer>
+#include "Nodes/OpenCV/OpenCVFilterUtils.h"
 
 namespace {
 const NodeHelpRegistration kHoughLinesPModelHelp(QStringLiteral("Hough Lines Probabilistic"),
@@ -238,11 +239,21 @@ std::tuple<LinesSegmentData, quint64> HoughLinesPModel::processImage(const QImag
     QElapsedTimer timer;
     timer.start();
     const cv::Mat src = QImageToMat(image);
+    if (src.empty()) {
+        return std::make_tuple(LinesSegmentData(), timer.elapsed());
+    }
+
     std::vector<cv::Vec4i> dst;
     try {
         cv::HoughLinesP(src, dst, rho, theta, threshold, minLineLength, maxLineGap);
-    } catch (cv::Exception& e) {
-        qDebug() << e.what();
+    } catch (const cv::Exception& exception) {
+        LogOpenCvError("HoughLinesP", exception);
+        return std::make_tuple(LinesSegmentData(), timer.elapsed());
+    } catch (const std::exception& exception) {
+        LogStdError("HoughLinesP", exception);
+        return std::make_tuple(LinesSegmentData(), timer.elapsed());
+    } catch (...) {
+        LogUnknownError("HoughLinesP");
         return std::make_tuple(LinesSegmentData(), timer.elapsed());
     }
     return std::make_tuple(LinesSegmentData(dst), timer.elapsed());

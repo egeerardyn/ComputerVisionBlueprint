@@ -1,6 +1,8 @@
 #ifndef OPENCVFILTERUTILS_H
 #define OPENCVFILTERUTILS_H
 
+#include <QDebug>
+
 #include <opencv2/opencv.hpp>
 
 #include "Nodes/Conversor/MatQt.h"
@@ -54,6 +56,18 @@ inline cv::Mat NormalizeMatForDisplay(const cv::Mat& mat) {
 
 inline QImage MatToDisplayImage(const cv::Mat& mat) {
     return MatToQImage(NormalizeMatForDisplay(mat));
+}
+
+inline void LogOpenCvError(const char* nodeName, const cv::Exception& exception) {
+    qWarning() << nodeName << "OpenCV error:" << exception.what();
+}
+
+inline void LogStdError(const char* nodeName, const std::exception& exception) {
+    qWarning() << nodeName << "Error:" << exception.what();
+}
+
+inline void LogUnknownError(const char* nodeName) {
+    qWarning() << nodeName << "Unknown error";
 }
 
 #endif //OPENCVFILTERUTILS_H

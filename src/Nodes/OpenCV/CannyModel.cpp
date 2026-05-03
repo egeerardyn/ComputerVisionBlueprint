@@ -7,6 +7,7 @@
 #include "Nodes/Data/DataInclude.h"
 #include <opencv2/opencv.hpp>
 #include "Nodes/Conversor/MatQt.h"
+#include "Nodes/OpenCV/OpenCVFilterUtils.h"
 #include <QtConcurrent/QtConcurrent>
 #include "ui_CannyForm.h"
 
@@ -201,12 +202,22 @@ QImage CannyModel::processImage(const QImage& image, const double lowThreshold, 
                                 const int apertureSize,
                                 const bool useL2Gradient) {
     const cv::Mat src = QImageToMat(image);
+    if (src.empty()) {
+        return {};
+    }
+
     cv::Mat dst;
     try {
         cv::Canny(src, dst, lowThreshold, highThreshold, apertureSize, useL2Gradient);
-    } catch (cv::Exception& e) {
-        qDebug() << e.what();
-        return QImage();
+    } catch (const cv::Exception& exception) {
+        LogOpenCvError("Canny", exception);
+        return {};
+    } catch (const std::exception& exception) {
+        LogStdError("Canny", exception);
+        return {};
+    } catch (...) {
+        LogUnknownError("Canny");
+        return {};
     }
     return MatToQImage(dst);
 }

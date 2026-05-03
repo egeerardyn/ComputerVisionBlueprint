@@ -113,6 +113,10 @@ std::tuple<QImage, quint64> MorphologyModelBase::processImage(QImage image, cons
 
     try {
         const cv::Mat src = QImageToMat(image);
+        if (src.empty()) {
+            return {QImage(), timer.elapsed()};
+        }
+
         cv::Mat dst;
         const cv::Mat kernel = cv::getStructuringElement(kernelShape,
                                                          cv::Size(std::max(1, kernelSize.width()),
@@ -128,7 +132,13 @@ std::tuple<QImage, quint64> MorphologyModelBase::processImage(QImage image, cons
 
         return {MatToDisplayImage(dst), timer.elapsed()};
     } catch (const cv::Exception& exception) {
-        qDebug() << exception.what();
+        LogOpenCvError("Morphology", exception);
+        return {QImage(), timer.elapsed()};
+    } catch (const std::exception& exception) {
+        LogStdError("Morphology", exception);
+        return {QImage(), timer.elapsed()};
+    } catch (...) {
+        LogUnknownError("Morphology");
         return {QImage(), timer.elapsed()};
     }
 }
