@@ -100,6 +100,10 @@ add_executable(ComputerVisionBlueprint
         src/Nodes/OpenCV/DistanceTransformModel.h
         src/Nodes/OpenCV/ConvertDepthChannelsModel.cpp
         src/Nodes/OpenCV/ConvertDepthChannelsModel.h
+        src/Nodes/OpenCV/SplitChannelsModel.cpp
+        src/Nodes/OpenCV/SplitChannelsModel.h
+        src/Nodes/OpenCV/MergeChannelsModel.cpp
+        src/Nodes/OpenCV/MergeChannelsModel.h
         src/Nodes/OpenCV/TypeConversionUtils.cpp
         src/Nodes/OpenCV/TypeConversionUtils.h
         src/Nodes/OpenCV/MorphologyModelBase.cpp

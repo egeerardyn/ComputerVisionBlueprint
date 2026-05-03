@@ -120,6 +120,8 @@ std::shared_ptr<QtNodes::NodeDelegateModelRegistry> MainWindow::registerDataMode
     ret->registerModel<DistanceTransformModel>("OpenCV");
     ret->registerModel<WatershedModel>("OpenCV");
     ret->registerModel<ConvertDepthChannelsModel>("OpenCV");
+    ret->registerModel<SplitChannelsModel>("OpenCV");
+    ret->registerModel<MergeChannelsModel>("OpenCV");
     ret->registerModel<HoughLinesPModel>("OpenCV");
     ret->registerModel<HoughCirclesModel>("OpenCV");
     ret->registerModel<SobelGradientModel>("OpenCV");

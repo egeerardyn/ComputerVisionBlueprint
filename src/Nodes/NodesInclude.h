@@ -57,6 +57,8 @@
 #include "Nodes/OpenCV/DistanceTransformModel.h"
 #include "Nodes/OpenCV/WatershedModel.h"
 #include "Nodes/OpenCV/ConvertDepthChannelsModel.h"
+#include "Nodes/OpenCV/SplitChannelsModel.h"
+#include "Nodes/OpenCV/MergeChannelsModel.h"
 #include "Nodes/OpenCV/HoughLinesPModel.h"
 #include "Nodes/OpenCV/HoughCirclesModel.h"
 #include "Nodes/OpenCV/SobelGradientModel.h"
