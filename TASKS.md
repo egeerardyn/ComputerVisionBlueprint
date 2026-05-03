@@ -10,6 +10,7 @@
 - [x] the light/dark mode switch does not properly work: light mode appears dark as well. Fix this [P0]
 - [x] add a test suite to test the available functionality [P0]
 - [x] improve error handling in nodes (clear error states/messages instead of crashing) [P0]
+- [x] add recipes in the just file to compile and run the test suite, also update AGENTS.md and other documentation to reflect this. New functionality should be covered by tests if it can be done
 - [ ] add explicit datatype conversion nodes (depth/channel conversion with saturation and scaling options) [P0]
 
 - [ ] implement OpenCV circle detection (via Hough transform) [P1]
@@ -42,6 +43,7 @@
 - [ ] add a node that is just a Note, i.e. contains multiple lines of text. In code generation it will generate comments [P2]
 - [ ] allow to call an external script or program to take input parameters and/or an image and return results and/or an image [P2]
   - [ ] ideally such a script would be written in Python
+- [ ] update direct calls to python/pip to use latest best practices such as uv; update the documentation
 
 ## Large tasks (need dedicated planning)
 

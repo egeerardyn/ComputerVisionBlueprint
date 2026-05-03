@@ -35,6 +35,7 @@ Useful related commands:
 
 - `just build-debug` to build a debug configuration
 - `just build-release` to build a release configuration without deployment
+- `just test` to build debug and run the test suite
 - `just clean` to remove Windows build directories
 
 For advanced/override options (for example `-QtDir <path>` or `-Clean`), call `scripts/compile.ps1` directly.

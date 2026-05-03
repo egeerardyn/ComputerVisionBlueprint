@@ -101,6 +101,9 @@ just build-release
 
 # or debug
 just build-debug
+
+# build debug and run tests
+just test
 ```
 
 ### Build on Windows (Visual Studio 2022)
@@ -113,12 +116,21 @@ just setup
 just package-release
 
 just run
+
+# build debug and run tests
+just test
 ```
 
 For a debug build:
 
 ```powershell
 just build-debug
+```
+
+To run tests in release mode:
+
+```powershell
+just test-release
 ```
 
 The `justfile` wraps the existing platform scripts (`setup.ps1`/`compile.ps1` on Windows and `setup.sh`/`compile.sh` on Linux) so the workflow is consistent across operating systems.

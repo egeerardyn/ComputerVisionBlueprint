@@ -48,9 +48,11 @@ just run
 
 - For C++/Qt/OpenCV changes, build at least once with:
   - `just build-debug`
+- Run automated tests for functional changes with:
+  - `just test`
 - If packaging or runtime DLL behavior is touched, also run:
   - `just package-release`
-- There is no established automated test suite yet; rely on successful build plus focused manual checks in the app.
+- Prefer adding or extending tests when introducing new behavior.
 
 ## Architecture Map
 

@@ -37,6 +37,22 @@ int run() {
         return 3;
     }
 
+    // ARGB images should convert to a valid 4-channel matrix.
+    QImage argb(11, 9, QImage::Format_ARGB32);
+    argb.fill(QColor(4, 8, 16, 200));
+    const cv::Mat argbMat = QImageToMat(argb);
+    if (argbMat.empty() || argbMat.type() != CV_8UC4 || argbMat.cols != argb.width() || argbMat.rows != argb.height()) {
+        return 4;
+    }
+
+    // Less common formats should still convert through the fallback path.
+    QImage mono(7, 5, QImage::Format_Mono);
+    mono.fill(1);
+    const cv::Mat monoMat = QImageToMat(mono);
+    if (monoMat.empty() || monoMat.type() != CV_8UC4 || monoMat.cols != mono.width() || monoMat.rows != mono.height()) {
+        return 5;
+    }
+
     return 0;
 }
 } // namespace
