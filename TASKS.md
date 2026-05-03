@@ -1,6 +1,18 @@
 
 # Milestones
 
+# Build improvements
+
+- [ ] add support for VS2026
+- [ ] add support for cross-compilation, specifically on Windows, to allow building on a different architecture than the actual machine being used. Scenarios that should be supported: 
+  - [ ] building x86-64 binaries on an ARM64 machine (already supported)
+  - [ ] building x86-64 binaries on an x86-64 machine (already supported)
+  - [ ] building ARM64 binaries on an ARM64 machine
+  - [ ] building ARM64 binaries on an x86-64 machine
+- [ ] When cross-compiling, the should be able to specify the target architecture using an environment variable. If this variable is absent, the native architecture should be used
+- [ ] Make sure the output folders no longer contain a reference to the version of Visual Studio
+- [ ] Make sure the `justfile` and PS1 scripts are updated properly  
+
 ## Short-term milestone (high impact)
 
 - [x] create a justfile with the most common commands used [P0]
@@ -29,6 +41,9 @@
 - [ ] remove the built-in matrix editor on Filter2D and instead take the kernel as an input [P2]
 - [ ] add ROI/cropping and mask editing tools/nodes [P2]
 - [ ] add graph presets/examples for common workflows (denoise, thresholding, edge detection) [P2]
+
+
+
 
 ## Long-term milestone (strategic)
 
