@@ -1,48 +1,45 @@
 
 # Milestones
 
-# Build improvements
+## Short term milestones
 
-- [ ] add support for VS2026
-- [ ] add support for cross-compilation, specifically on Windows, to allow building on a different architecture than the actual machine being used. Scenarios that should be supported: 
-  - [ ] building x86-64 binaries on an ARM64 machine (already supported)
-  - [ ] building x86-64 binaries on an x86-64 machine (already supported)
-  - [ ] building ARM64 binaries on an ARM64 machine
-  - [ ] building ARM64 binaries on an x86-64 machine
-- [ ] When cross-compiling, the should be able to specify the target architecture using an environment variable. If this variable is absent, the native architecture should be used
-- [ ] Make sure the output folders no longer contain a reference to the version of Visual Studio
-- [ ] Make sure the `justfile` and PS1 scripts are updated properly  
+### CI pipeline [P0]
+- [ ] add a GitHub Actions workflow that builds and runs tests on `ubuntu-latest` (gcc, Release)
+- [ ] add a GitHub Actions workflow that builds and runs tests on `windows-latest` (x64 MSVC, Release)
+- [ ] upload build artifacts and test results as workflow artifacts on both platforms
+- [ ] gate PRs on both CI workflows passing (branch protection rule)
 
-## Short-term milestone (high impact)
+### Cross-compilation on Windows [P1]
+- [ ] building ARM64 binaries on an ARM64 machine (native ARM64 Conan profile + MSVC ARM64 toolset)
+- [ ] building ARM64 binaries on an x86-64 machine (cross-compile Conan profile + MSVC ARM64 toolset)
+- [ ] building x86-64 binaries on an ARM64 machine (already handled by `--settings=arch=x86_64` in setup.ps1)
+- [ ] building x86-64 binaries on an x86-64 machine (already supported)
+- [ ] expose a `-Arch` parameter in `compile.ps1` (`x64` or `arm64`) that sets the CMake `-A` flag and selects the matching Conan output folder
+- [ ] update `setup.ps1` to generate Conan output folders per target arch (e.g. `.conan/Debug-x64`, `.conan/Release-arm64`)
+- [ ] add corresponding `just` recipes: `build-debug-arm64`, `package-release-arm64`
+- [ ] document all four scenarios and the new `-Arch` parameter in `WINDOWS_BUILD.md`
 
-- [x] create a justfile with the most common commands used [P0]
-  - [x]  make sure this file can be used with either Linux or Windows
-  - [x]  update the markdown documentation files to use the just file instead of calling the ps1/sh files directly
-- [x] fix application crashes, it seems to happen when an image does not have the right datatype (e.g. putting a color image to a morphological operator) [P0]
-- [x] the light/dark mode switch does not properly work: light mode appears dark as well. Fix this [P0]
-- [x] add a test suite to test the available functionality [P0]
-- [x] improve error handling in nodes (clear error states/messages instead of crashing) [P0]
-- [x] add recipes in the just file to compile and run the test suite, also update AGENTS.md and other documentation to reflect this. New functionality should be covered by tests if it can be done
-- [x] add explicit datatype conversion nodes (depth/channel conversion with saturation and scaling options) [P0]
+### VS2026 readiness [P1]
+- [ ] update `compile.ps1` generator string from `"Visual Studio 17 2022"` to `"Visual Studio 18 2026"` once VS2026 releases
+- [ ] update `CMakePresets.json` and `CMakeUserPresets.json` generator field accordingly
+- [ ] verify Conan `compiler.version` for MSVC 194/195 toolset
+- [ ] add a `just build-debug-vs2026` recipe and validate the build
 
-- [x] implement OpenCV circle detection (via Hough transform) [P1]
-- [x] add Sobel/Scharr edge and gradient nodes [P1]
-- [x] add image histogram and histogram equalization/CLAHE nodes [P1]
+### Setup script hardening [P2]
+- [ ] detect `uv` version at startup in `setup.ps1` and warn if below a known-good minimum
+- [ ] add a `-SkipQt` flag to `setup.ps1` for CI environments where Qt is pre-installed
+- [ ] add a `-SkipConan` flag to `setup.ps1` to allow incremental dependency installs
+- [ ] make `setup.sh` parity: add `uv`/`uvx` bootstrap and `--settings=arch` override equivalent to the PS1 changes
+
+### Node library [P1/P2]
 - [ ] add connected components and contour analysis nodes (labeling, area, perimeter, moments) [P1]
-- [x] add template matching node (with selectable matching method) [P1]
 - [ ] add video file stream input node [P1]
-
-- [x] add nodes to convert between images that use indexed and non-indexed colors [P1]
-- [x] add a node to save an image to file in different common file formats (e.g. TIFF, PNG, CSV, BMP, OpenEXR, ...) [P1]
-- [ ] add an inspector dock, that shows the currently selected port's contents (e.g. show the image if it's an image) [P1]
-
+- [ ] add an inspector dock that shows the currently selected port's contents (e.g. show the image if it's an image) [P1]
 - [ ] add a simple matrix editor to edit small image kernels (e.g. 3x3 up to 21x21) [P2]
 - [ ] add a node to load an image kernel from a CSV file [P2]
 - [ ] remove the built-in matrix editor on Filter2D and instead take the kernel as an input [P2]
 - [ ] add ROI/cropping and mask editing tools/nodes [P2]
 - [ ] add graph presets/examples for common workflows (denoise, thresholding, edge detection) [P2]
-
-
 
 
 ## Long-term milestone (strategic)
