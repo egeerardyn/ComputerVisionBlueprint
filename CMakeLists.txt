@@ -39,6 +39,8 @@ add_executable(ComputerVisionBlueprint
         src/Nodes/Conversor/MatQt.cpp
         src/Nodes/Conversor/MatQt.h
         src/Nodes/Data/CascadeClassifierData.h
+        src/Nodes/Data/CircleData.h
+        src/Nodes/Data/CirclesData.h
         src/Nodes/Data/DataInclude.h
         src/Nodes/Data/FileData.h
         src/Nodes/Data/ImageData.h
@@ -49,6 +51,9 @@ add_executable(ComputerVisionBlueprint
         src/Nodes/Images/DrawLinesForm.ui
         src/Nodes/Images/DrawLinesModel.cpp
         src/Nodes/Images/DrawLinesModel.h
+        src/Nodes/Images/DrawCirclesForm.ui
+        src/Nodes/Images/DrawCirclesModel.cpp
+        src/Nodes/Images/DrawCirclesModel.h
         src/Nodes/Images/DrawRectsForm.ui
         src/Nodes/Images/DrawRectsModel.cpp
         src/Nodes/Images/DrawRectsModel.h
@@ -99,6 +104,11 @@ add_executable(ComputerVisionBlueprint
         src/Widgets/ThemeManager.h
         src/Nodes/Variables/RectVarModel.cpp
         src/Nodes/Variables/RectVarModel.h
+        src/Nodes/Variables/CircleForm.ui
+        src/Nodes/Variables/CircleModel.cpp
+        src/Nodes/Variables/CircleModel.h
+        src/Nodes/Variables/CircleVarModel.cpp
+        src/Nodes/Variables/CircleVarModel.h
         src/Nodes/Data/PointData.h
         src/Nodes/Data/RectData.h
         src/Nodes/Images/ConvertImageToModel.cpp

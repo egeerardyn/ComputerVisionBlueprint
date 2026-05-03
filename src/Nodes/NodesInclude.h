@@ -20,6 +20,7 @@
 #include "Nodes/Images/ImageLoaderModel.hpp"
 #include "Nodes/Images/ImageShowModel.hpp"
 #include "Nodes/Images/ImageInfoModel.h"
+#include "Nodes/Images/DrawCirclesModel.h"
 #include "Nodes/Images/DrawLinesModel.h"
 #include "Nodes/Images/DrawRectsModel.h"
 #include "Nodes/Images/ConvertImageToModel.h"
@@ -29,6 +30,8 @@
 #include "Nodes/Variables/SizeVarModel.h"
 #include "Nodes/Variables/FileVarModel.h"
 #include "Nodes/Variables/FileFromUrlModel.h"
+#include "Nodes/Variables/CircleModel.h"
+#include "Nodes/Variables/CircleVarModel.h"
 #include "Nodes/Variables/RectVarModel.h"
 #include "Nodes/Variables/RectModel.h"
 

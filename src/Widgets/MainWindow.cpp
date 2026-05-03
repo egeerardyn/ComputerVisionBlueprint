@@ -87,6 +87,7 @@ std::shared_ptr<QtNodes::NodeDelegateModelRegistry> MainWindow::registerDataMode
     ret->registerModel<ImageLoaderModel>("Images");
     ret->registerModel<ImageShowModel>("Images");
     ret->registerModel<ImageInfoModel>("Images");
+    ret->registerModel<DrawCirclesModel>("Images");
     ret->registerModel<DrawLinesModel>("Images");
     ret->registerModel<DrawRectsModel>("Images");
     ret->registerModel<ConvertImageToModel>("Images");
@@ -106,6 +107,8 @@ std::shared_ptr<QtNodes::NodeDelegateModelRegistry> MainWindow::registerDataMode
 
     ret->registerModel<SizeVarModel>("Variables");
     ret->registerModel<FileVarModel>("Variables");
+    ret->registerModel<CircleModel>("Variables");
+    ret->registerModel<CircleVarModel>("Variables");
     ret->registerModel<RectVarModel>("Variables");
     ret->registerModel<RectModel>("Variables");
     ret->registerModel<FileFromUrlModel>("Variables");
