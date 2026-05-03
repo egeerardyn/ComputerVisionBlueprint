@@ -31,7 +31,7 @@ else
 fi
 
 # Create a virtual environment on the current directory .venv
-python3 -m venv .venv
+uv venv .venv
 source .venv/bin/activate
 
 # Upgrade pip
