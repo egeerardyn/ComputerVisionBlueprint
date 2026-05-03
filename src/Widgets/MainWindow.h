@@ -46,6 +46,12 @@ private slots:
 
     void onActionLoadTriggered();
 
+    void updateHelpForSelection();
+
+    void showNodePaletteHelp(const QString& nodeName);
+
+    void clearNodePaletteHelp();
+
 private:
     void createThemeUi();
 

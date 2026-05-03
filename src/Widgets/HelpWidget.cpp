@@ -1,25 +1,55 @@
 #include "HelpWidget.h"
 
+#include <QDesktopServices>
 #include <QLabel>
+#include <QPushButton>
 #include <QTextBrowser>
 #include <QVBoxLayout>
+
+#include "Nodes/NodeHelpInfo.h"
+
+namespace {
+    QString nodeHelpToHtml(const QString& summary) {
+        return QStringLiteral("<p>%1</p>").arg(summary.toHtmlEscaped().replace('\n', QStringLiteral("<br/>")));
+    }
+}
 
 HelpWidget::HelpWidget(QWidget* parent) : QWidget(parent) {
     auto* layout = new QVBoxLayout(this);
     layout->setContentsMargins(12, 12, 12, 12);
     layout->setSpacing(8);
 
-    auto* title = new QLabel("<b>Computer Vision Blueprint Help</b>", this);
-    layout->addWidget(title);
+    m_titleLabel = new QLabel(this);
+    m_titleLabel->setWordWrap(true);
+    layout->addWidget(m_titleLabel);
 
-    auto* browser = new QTextBrowser(this);
-    browser->setOpenExternalLinks(true);
-    browser->setHtml(
+    m_browser = new QTextBrowser(this);
+    m_browser->setOpenExternalLinks(false);
+    layout->addWidget(m_browser, 1);
+
+    m_onlineHelpButton = new QPushButton("Open online help", this);
+    m_onlineHelpButton->hide();
+    layout->addWidget(m_onlineHelpButton);
+
+    connect(m_onlineHelpButton, &QPushButton::clicked, this, &HelpWidget::openCurrentOnlineHelp);
+
+    showDefaultHelp();
+}
+
+void HelpWidget::showDefaultHelp() {
+    m_titleLabel->setText("<b>Computer Vision Blueprint Help</b>");
+    m_browser->setHtml(
         "<h3>Getting started</h3>"
         "<ul>"
         "<li>Drag nodes from the left panel into the scene.</li>"
         "<li>Connect compatible ports to build an image-processing pipeline.</li>"
+        "<li>Select a node to see its brief description here.</li>"
         "<li>Use <b>File &gt; Save</b> and <b>File &gt; Load</b> to work with stored scenes.</li>"
+        "</ul>"
+        "<h3>Node help</h3>"
+        "<ul>"
+        "<li>When a single node is selected, this dock shows a short explanation of what it does.</li>"
+        "<li>If a node has an online reference, use <b>Open online help</b> to launch it in your browser.</li>"
         "</ul>"
         "<h3>Themes</h3>"
         "<ul>"
@@ -27,18 +57,35 @@ HelpWidget::HelpWidget(QWidget* parent) : QWidget(parent) {
         "<li>Open <b>View &gt; Theme Controls</b> to tune custom colors.</li>"
         "<li>Theme choices persist automatically between runs.</li>"
         "</ul>"
-        "<h3>New filters</h3>"
-        "<ul>"
-        "<li><b>Median Blur</b> removes salt-and-pepper noise with an odd kernel size.</li>"
-        "<li><b>Bilateral Filter</b> smooths while keeping strong edges.</li>"
-        "<li><b>Box Filter</b> and <b>SQR Box Filter</b> expose classic averaging kernels.</li>"
-        "<li><b>Filter2D</b> applies a custom 3x3 convolution kernel.</li>"
-        "</ul>"
-        "<h3>Circle data</h3>"
-        "<ul>"
-        "<li><b>Circle</b> outputs a single center/radius pair.</li>"
-        "<li><b>Circles</b> combines single circles or circle collections for drawing nodes such as <b>Draw Circles</b>.</li>"
-        "</ul>"
-        "<p>Tip: Keep this dock open while building workflows, or hide it from the <b>View</b> menu.</p>");
-    layout->addWidget(browser, 1);
+        "<p>Tip: Keep this dock open while building workflows, or hide it from the <b>Help</b> menu.</p>");
+    setOnlineHelpUrl(QUrl());
+}
+
+void HelpWidget::showNodeHelp(const QString& nodeTitle, const NodeHelpInfo& helpInfo) {
+    m_titleLabel->setText(QStringLiteral("<b>%1</b>").arg(nodeTitle.toHtmlEscaped()));
+    m_browser->setHtml(nodeHelpToHtml(helpInfo.hasSummary()
+                                          ? helpInfo.summary
+                                          : QStringLiteral("No node-specific help is available for this node yet.")));
+    setOnlineHelpUrl(helpInfo.onlineHelpUrl);
+}
+
+void HelpWidget::showMultiSelectionHelp(const int selectedCount) {
+    m_titleLabel->setText("<b>Multiple nodes selected</b>");
+    m_browser->setHtml(QStringLiteral(
+                           "<p>%1 nodes are selected. Select a single node to see its brief description and any available online help link.</p>")
+                           .arg(selectedCount));
+    setOnlineHelpUrl(QUrl());
+}
+
+void HelpWidget::openCurrentOnlineHelp() const {
+    if (m_currentOnlineHelpUrl.isValid() && !m_currentOnlineHelpUrl.isEmpty()) {
+        QDesktopServices::openUrl(m_currentOnlineHelpUrl);
+    }
+}
+
+void HelpWidget::setOnlineHelpUrl(const QUrl& url) {
+    m_currentOnlineHelpUrl = url;
+    const bool hasOnlineHelp = m_currentOnlineHelpUrl.isValid() && !m_currentOnlineHelpUrl.isEmpty();
+    m_onlineHelpButton->setVisible(hasOnlineHelp);
+    m_onlineHelpButton->setEnabled(hasOnlineHelp);
 }

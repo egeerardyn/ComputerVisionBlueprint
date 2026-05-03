@@ -38,6 +38,8 @@ add_executable(ComputerVisionBlueprint
         src/Nodes/Constants/PiModel.h
         src/Nodes/Conversor/MatQt.cpp
         src/Nodes/Conversor/MatQt.h
+        src/Nodes/NodeHelpInfo.cpp
+        src/Nodes/NodeHelpInfo.h
         src/Nodes/Data/CascadeClassifierData.h
         src/Nodes/Data/CircleData.h
         src/Nodes/Data/CirclesData.h

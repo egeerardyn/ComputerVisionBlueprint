@@ -8,13 +8,16 @@
 #include "ui_MainWindow.h"
 #include <QActionGroup>
 #include <QDockWidget>
+#include <QGraphicsScene>
 #include <QMouseEvent>
 #include <QMenu>
 #include <QStatusBar>
 
 #include <QtNodes/DataFlowGraphicsScene>
 #include <QtNodes/DataFlowGraphModel>
+#include <QtNodes/NodeDelegateModel>
 #include "Nodes/NodesInclude.h"
+#include "Nodes/NodeHelpInfo.h"
 #include "UndoCommands.hpp"
 
 #include <QtNodes/GraphicsView>
@@ -46,9 +49,14 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->nodes_graphicsView->setMapGroupNames(ui->tw_nodes->getMapGroupNames());
     ui->nodes_graphicsView->setDataFlowScene(m_scene);
     ui->nodes_graphicsView->setScene(m_scene);
+    connect(m_scene, &QGraphicsScene::selectionChanged, this, &MainWindow::updateHelpForSelection);
+    connect(ui->tw_nodes, &DragableTreeOfNodes::nodeSelected, this, &MainWindow::showNodePaletteHelp);
+    connect(ui->tw_nodes, &DragableTreeOfNodes::nodeSelectionCleared, this, &MainWindow::clearNodePaletteHelp);
 
     connect(ui->actionSave, &QAction::triggered, this, &MainWindow::onActionSaveTriggered);
     connect(ui->actionLoad, &QAction::triggered, this, &MainWindow::onActionLoadTriggered);
+
+    updateHelpForSelection();
 
     statusBar()->showMessage("Ready", 2000);
 }
@@ -192,6 +200,44 @@ void MainWindow::createHelpUi() {
     auto* showHelpAction = m_helpDock->toggleViewAction();
     showHelpAction->setText("Help");
     helpMenu->addAction(showHelpAction);
+}
+
+void MainWindow::updateHelpForSelection() {
+    if (!m_helpWidget || !m_scene || !m_model) {
+        return;
+    }
+
+    const std::vector<QtNodes::NodeId> selectedNodeIds = m_scene->selectedNodes();
+    if (selectedNodeIds.empty()) {
+        m_helpWidget->showDefaultHelp();
+        return;
+    }
+
+    if (selectedNodeIds.size() > 1) {
+        m_helpWidget->showMultiSelectionHelp(static_cast<int>(selectedNodeIds.size()));
+        return;
+    }
+
+    auto* delegateModel = m_model->delegateModel<QtNodes::NodeDelegateModel>(selectedNodeIds.front());
+    if (!delegateModel) {
+        m_helpWidget->showDefaultHelp();
+        return;
+    }
+
+    const QString nodeTitle = delegateModel->caption().isEmpty() ? delegateModel->name() : delegateModel->caption();
+    m_helpWidget->showNodeHelp(nodeTitle, nodeHelpInfoForModel(*delegateModel));
+}
+
+void MainWindow::showNodePaletteHelp(const QString& nodeName) {
+    if (!m_helpWidget || nodeName.isEmpty()) {
+        return;
+    }
+
+    m_helpWidget->showNodeHelp(nodeName, nodeHelpInfoForModelName(nodeName));
+}
+
+void MainWindow::clearNodePaletteHelp() {
+    updateHelpForSelection();
 }
 
 void MainWindow::updateThemeActions() const {
