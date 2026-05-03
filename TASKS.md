@@ -13,7 +13,7 @@
 - [x] add recipes in the just file to compile and run the test suite, also update AGENTS.md and other documentation to reflect this. New functionality should be covered by tests if it can be done
 - [x] add explicit datatype conversion nodes (depth/channel conversion with saturation and scaling options) [P0]
 
-- [ ] implement OpenCV circle detection (via Hough transform) [P1]
+- [x] implement OpenCV circle detection (via Hough transform) [P1]
 - [ ] add Sobel/Scharr edge and gradient nodes [P1]
 - [ ] add image histogram and histogram equalization/CLAHE nodes [P1]
 - [ ] add connected components and contour analysis nodes (labeling, area, perimeter, moments) [P1]

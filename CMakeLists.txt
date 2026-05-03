@@ -116,6 +116,10 @@ add_executable(ComputerVisionBlueprint
         src/Nodes/OpenCV/HoughLinesPModel.cpp
         src/Nodes/OpenCV/HoughLinesPModel.h
         src/Nodes/OpenCV/HoughLinesPForm.ui
+        src/Nodes/OpenCV/HoughCirclesModel.cpp
+        src/Nodes/OpenCV/HoughCirclesModel.h
+        src/Nodes/OpenCV/HoughCirclesUtils.cpp
+        src/Nodes/OpenCV/HoughCirclesUtils.h
         src/Nodes/OpenCV/MedianBlurForm.ui
         src/Nodes/OpenCV/MedianBlurModel.cpp
         src/Nodes/OpenCV/MedianBlurModel.h
@@ -219,3 +223,16 @@ target_link_libraries(ComputerVisionBlueprintTypeConversionTests PRIVATE
 target_include_directories(ComputerVisionBlueprintTypeConversionTests PRIVATE src)
 
 add_test(NAME type_conversion_utils_test COMMAND ComputerVisionBlueprintTypeConversionTests)
+
+add_executable(ComputerVisionBlueprintHoughCirclesTests
+        tests/HoughCirclesUtilsTest.cpp
+        src/Nodes/OpenCV/HoughCirclesUtils.cpp
+)
+
+target_link_libraries(ComputerVisionBlueprintHoughCirclesTests PRIVATE
+        ${OpenCV_LIBS}
+)
+
+target_include_directories(ComputerVisionBlueprintHoughCirclesTests PRIVATE src)
+
+add_test(NAME hough_circles_utils_test COMMAND ComputerVisionBlueprintHoughCirclesTests)
