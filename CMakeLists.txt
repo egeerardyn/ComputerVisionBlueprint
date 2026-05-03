@@ -172,6 +172,12 @@ add_executable(ComputerVisionBlueprint
         src/Nodes/Images/ScaleImageModel.cpp
         src/Nodes/Images/ScaleImageModel.h
         src/Nodes/Images/ScaleImageForm.ui
+        src/Nodes/Images/IndexedColorUtils.cpp
+        src/Nodes/Images/IndexedColorUtils.h
+        src/Nodes/Images/ToIndexedColorModel.cpp
+        src/Nodes/Images/ToIndexedColorModel.h
+        src/Nodes/Images/FromIndexedColorModel.cpp
+        src/Nodes/Images/FromIndexedColorModel.h
         src/Nodes/DataOperations/ScaleRects.cpp
         src/Nodes/DataOperations/ScaleRects.h
         src/Nodes/Variables/RectModel.cpp
@@ -291,3 +297,16 @@ target_link_libraries(ComputerVisionBlueprintTemplateMatchingTests PRIVATE
 target_include_directories(ComputerVisionBlueprintTemplateMatchingTests PRIVATE src)
 
 add_test(NAME template_matching_utils_test COMMAND ComputerVisionBlueprintTemplateMatchingTests)
+
+add_executable(ComputerVisionBlueprintIndexedColorTests
+        tests/IndexedColorUtilsTest.cpp
+        src/Nodes/Images/IndexedColorUtils.cpp
+)
+
+target_link_libraries(ComputerVisionBlueprintIndexedColorTests PRIVATE
+        Qt6::Gui
+)
+
+target_include_directories(ComputerVisionBlueprintIndexedColorTests PRIVATE src)
+
+add_test(NAME indexed_color_utils_test COMMAND ComputerVisionBlueprintIndexedColorTests)

@@ -20,7 +20,7 @@
 - [x] add template matching node (with selectable matching method) [P1]
 - [ ] add video file stream input node [P1]
 
-- [ ] add nodes to convert between images that use indexed and non-indexed colors [P1]
+- [x] add nodes to convert between images that use indexed and non-indexed colors [P1]
 - [ ] add a node to save an image to file in different common file formats (e.g. TIFF, PNG, CSV, BMP, OpenEXR, ...) [P1]
 - [ ] add an inspector dock, that shows the currently selected port's contents (e.g. show the image if it's an image) [P1]
 

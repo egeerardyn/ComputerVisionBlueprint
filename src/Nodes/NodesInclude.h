@@ -26,6 +26,8 @@
 #include "Nodes/Images/ConvertImageToModel.h"
 #include "Nodes/Images/ScaleImageModel.h"
 #include "Nodes/Images/CutImageModel.h"
+#include "Nodes/Images/ToIndexedColorModel.h"
+#include "Nodes/Images/FromIndexedColorModel.h"
 // Variables
 #include "Nodes/Variables/SizeVarModel.h"
 #include "Nodes/Variables/FileVarModel.h"

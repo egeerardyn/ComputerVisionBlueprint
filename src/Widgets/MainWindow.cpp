@@ -101,6 +101,8 @@ std::shared_ptr<QtNodes::NodeDelegateModelRegistry> MainWindow::registerDataMode
     ret->registerModel<ConvertImageToModel>("Images");
     ret->registerModel<ScaleImageModel>("Images");
     ret->registerModel<CutImageModel>("Images");
+    ret->registerModel<ToIndexedColorModel>("Images");
+    ret->registerModel<FromIndexedColorModel>("Images");
 
     ret->registerModel<ColorCVModel>("OpenCV");
     ret->registerModel<BlurModel>("OpenCV");
