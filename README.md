@@ -206,8 +206,8 @@ Use this space to show useful examples of how a project can be used. Additional 
   - [x] Erode
   - [x] Dilate
   - [x] MorphologyEx
-  - [ ] Distance Transform
-  - [ ] Watershed
+  - [x] Distance Transform
+  - [x] Watershed
 
 - [x] Files
      - [x] From file
@@ -222,14 +222,16 @@ Use this space to show useful examples of how a project can be used. Additional 
 - [ ] DLib integration
     - [ ] Face landmarks
 
-- [ ] Draws 
+- [x] Draws 
   - [x] Draw rectangles
-  - [ ] Draw circles
+  - [x] Draw circles
   - [x] Draw lines
 
 See the [open issues](https://github.com/PabloPicose/ComputerVisionBlueprint/issues) for a full list of proposed features (and known issues).
 
 > Note: the main window already exposes Save and Load actions, but the roadmap item for workflow persistence remains unchecked until that workflow is documented and complete end-to-end.
+
+> Watershed follows a marker-based workflow: generate markers with **Distance Transform**, inspect the marker preview if needed, then feed those markers into **Watershed**.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
