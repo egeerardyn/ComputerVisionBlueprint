@@ -6,12 +6,12 @@
 - [x] create a justfile with the most common commands used [P0]
   - [x]  make sure this file can be used with either Linux or Windows
   - [x]  update the markdown documentation files to use the just file instead of calling the ps1/sh files directly
-- [ ] fix application crashes, it seems to happen when an image does not have the right datatype (e.g. putting a color image to a morphological operator) [P0]
+- [x] fix application crashes, it seems to happen when an image does not have the right datatype (e.g. putting a color image to a morphological operator) [P0]
 - [ ] the light/dark mode switch does not properly work: light mode appears dark as well. Fix this [P0]
+- [ ] add a test suite to test the available functionality [P0]
 - [ ] improve error handling in nodes (clear error states/messages instead of crashing) [P0]
 - [ ] add explicit datatype conversion nodes (depth/channel conversion with saturation and scaling options) [P0]
 - [ ] add graph validation before execution (port compatibility, missing inputs, cycle detection) [P0]
-- [ ] add a test suite to test the available functionality [P0]
 - [ ] add CI pipeline to build and run tests on Windows and Linux [P0]
 
 - [ ] implement OpenCV circle detection (via Hough transform) [P1]
