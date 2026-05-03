@@ -56,6 +56,8 @@
 #include "Nodes/OpenCV/ConvertDepthChannelsModel.h"
 #include "Nodes/OpenCV/HoughLinesPModel.h"
 #include "Nodes/OpenCV/HoughCirclesModel.h"
+#include "Nodes/OpenCV/SobelGradientModel.h"
+#include "Nodes/OpenCV/ScharrGradientModel.h"
 #include "Nodes/OpenCV/CascadeClassifierModel.h"
 #include "Nodes/OpenCV/EqualizeHistModel.h"
 #include "Nodes/OpenCV/DetectMultiScaleModel.h"

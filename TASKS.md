@@ -14,7 +14,7 @@
 - [x] add explicit datatype conversion nodes (depth/channel conversion with saturation and scaling options) [P0]
 
 - [x] implement OpenCV circle detection (via Hough transform) [P1]
-- [ ] add Sobel/Scharr edge and gradient nodes [P1]
+- [x] add Sobel/Scharr edge and gradient nodes [P1]
 - [ ] add image histogram and histogram equalization/CLAHE nodes [P1]
 - [ ] add connected components and contour analysis nodes (labeling, area, perimeter, moments) [P1]
 - [ ] add template matching node (with selectable matching method) [P1]

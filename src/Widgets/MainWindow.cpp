@@ -119,6 +119,8 @@ std::shared_ptr<QtNodes::NodeDelegateModelRegistry> MainWindow::registerDataMode
     ret->registerModel<ConvertDepthChannelsModel>("OpenCV");
     ret->registerModel<HoughLinesPModel>("OpenCV");
     ret->registerModel<HoughCirclesModel>("OpenCV");
+    ret->registerModel<SobelGradientModel>("OpenCV");
+    ret->registerModel<ScharrGradientModel>("OpenCV");
     ret->registerModel<EqualizeHistModel>("OpenCV");
     ret->registerModel<PyrDown>("OpenCV");
 
