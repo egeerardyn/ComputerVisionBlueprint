@@ -126,6 +126,12 @@ add_executable(ComputerVisionBlueprint
         src/Nodes/OpenCV/SobelGradientModel.h
         src/Nodes/OpenCV/ScharrGradientModel.cpp
         src/Nodes/OpenCV/ScharrGradientModel.h
+        src/Nodes/OpenCV/HistogramClaheUtils.cpp
+        src/Nodes/OpenCV/HistogramClaheUtils.h
+        src/Nodes/OpenCV/HistogramModel.cpp
+        src/Nodes/OpenCV/HistogramModel.h
+        src/Nodes/OpenCV/ClaheModel.cpp
+        src/Nodes/OpenCV/ClaheModel.h
         src/Nodes/OpenCV/MedianBlurForm.ui
         src/Nodes/OpenCV/MedianBlurModel.cpp
         src/Nodes/OpenCV/MedianBlurModel.h
@@ -255,3 +261,16 @@ target_link_libraries(ComputerVisionBlueprintGradientTests PRIVATE
 target_include_directories(ComputerVisionBlueprintGradientTests PRIVATE src)
 
 add_test(NAME gradient_utils_test COMMAND ComputerVisionBlueprintGradientTests)
+
+add_executable(ComputerVisionBlueprintHistogramClaheTests
+        tests/HistogramClaheUtilsTest.cpp
+        src/Nodes/OpenCV/HistogramClaheUtils.cpp
+)
+
+target_link_libraries(ComputerVisionBlueprintHistogramClaheTests PRIVATE
+        ${OpenCV_LIBS}
+)
+
+target_include_directories(ComputerVisionBlueprintHistogramClaheTests PRIVATE src)
+
+add_test(NAME histogram_clahe_utils_test COMMAND ComputerVisionBlueprintHistogramClaheTests)
